@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Domain\Article;
 
 use App\Repository\ArticleRepository;
 use Doctrine\DBAL\Types\Types;
@@ -22,6 +22,11 @@ class Article
 
     #[ORM\Column]
     private ?bool $active = null;
+
+    public function __construct()
+    {
+        $this->active = false;
+    }
 
     public function getId(): ?int
     {

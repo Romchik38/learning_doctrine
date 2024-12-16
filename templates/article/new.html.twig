@@ -7,9 +7,17 @@
 <div class="container">
     <h1>Create new Article</h1>
 
-    Fill form bellow to create new article
-    <form>
-        This is a form
+    <p>Fill form bellow to create new article</p>
+    <form action="/article/save" method="post">
+      <div class="mb-3">
+        <label class="form-label" for="name">Name</label>
+        <input type="text" class="form-control" name="name" required>
+      </div>
+      <div class="mb-3">
+          <label for="short_description" class="form-label">Short Description</label>
+          <textarea class="form-control" name="short_description" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 {% endblock %}
