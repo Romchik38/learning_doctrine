@@ -13,7 +13,7 @@
         </div>
         <div class="mb-3">
             <label for="short_description" class="form-label">Short Description</label>
-            <textarea class="form-control" name="short_description" rows="3" required>{{ article.shortDescription }}</textarea>
+            <textarea class="form-control" name="short_description" rows="3" required maxlength="100">{{ article.shortDescription }}</textarea>
         </div>
         <div class="mb-3">
             <span>Article is {{ article.active }}</span>

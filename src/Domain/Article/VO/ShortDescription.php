@@ -11,7 +11,7 @@ final class ShortDescription
     public function __construct(
         public readonly string $shortDescription
     ) {
-        $length = strlen($shortDescription);
+        $length = mb_strlen($shortDescription);
         if ( $length === 0) {
             throw new InvalidArgumentException('short description is empty');
         } elseif ($length > 100) {
