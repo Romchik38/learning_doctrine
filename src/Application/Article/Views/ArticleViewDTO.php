@@ -6,10 +6,14 @@ namespace App\Application\Article\Views;
 
 final class ArticleViewDTO
 {
+    public readonly string $active;
+
     public function __construct(
         public readonly int $id,
         public readonly string $name,
         public readonly string $shortDescription,
-        public readonly bool $active,
-    ) {}
+        bool $active,
+    ) {
+        $this->active = ($active === true) ? 'active' : 'not active';
+    }
 }

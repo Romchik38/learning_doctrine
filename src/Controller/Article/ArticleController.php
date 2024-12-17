@@ -69,7 +69,7 @@ class ArticleController extends AbstractController
 
     #[Route('/articles', name:'article_list', methods: ['GET', 'HEAD'])]
     public function list(): Response{
-        $articles = [1, 2];
+        $articles = $this->articleService->listAll();
 
         return $this->render('base.html.twig', [
             'controller_name' => 'ArticleController',

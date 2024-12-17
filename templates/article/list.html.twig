@@ -1,9 +1,36 @@
 {% block body %}
 
 <div class="container">
-    <h1>Article listing page</h1>
-    {% for article in articles %}
-        <li>{{ article }}</li>
-    {% endfor %}
+      <h1>Article listing page</h1>
+      <div class="text-end">
+            <a class="btn btn-primary" href="#" role="button">New</a>
+      </div>
+      <table class="table">
+          <thead>
+                <tr>
+                      <th scope="col">Id</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Short Description</th>
+                      <th scope="col">Active</th>
+                      <th scope="col">Edit</th>
+                      <th scope="col">Delete</th>
+                </tr>
+          </thead>
+          <tbody>
+                {% for article in articles %}
+                    <tr>
+                          <th scope="row">{{ article.id }}</th>
+                          <td>{{ article.name }}</td>
+                          <td>{{ article.shortDescription }}</td>
+                          <td>{{ article.active }}</td>
+                          <td><a href="#">edit</a></td>
+                          <td><a href="#">delete</a></td>
+                    </tr>
+                {% endfor %}
+          </tbody>
+      </table>
+      <div class="text-end">
+            <a class="btn btn-primary" href="#" role="button">New</a>
+      </div>
 </div>
 {% endblock %}

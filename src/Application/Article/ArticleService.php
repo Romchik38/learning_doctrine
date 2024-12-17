@@ -68,4 +68,25 @@ class ArticleService
             $model->isActive()
         );
     }
+
+    /**
+     * @return array<int,ArticleViewDTO>
+     */
+    public function listAll(): array
+    {
+        $models = $this->articleRepository->findAll();
+        $dtos = [];
+        foreach ($models as $model) {
+            $id = new Id($model->getId());
+            $name = new Name($model->getName());
+            $shortDescription = new ShortDescription($model->getShortDescription());
+            $dtos[] = new ArticleViewDTO(
+                $id(),
+                $name(),
+                $shortDescription(),
+                $model->isActive()
+            );
+        }
+        return $dtos;
+    }
 }
