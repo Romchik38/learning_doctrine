@@ -5,6 +5,7 @@ namespace App\Controller\Article;
 use App\Application\Article\AddFromForm;
 use App\Application\Article\ArticleService;
 use App\Application\Article\CantAddException;
+use App\Application\Article\CantDeleteException;
 use App\Application\Article\NoSuchArticleException;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -102,9 +103,26 @@ final class ArticleController extends AbstractController
         }
     }
 
-    #[Route('/redirect', name: 'redirect', methods: ['GET', 'HEAD'])]
-    public function willredirect(): RedirectResponse
+    #[Route('/article/delete/{id}', name: 'article_delete', methods: ['POST'])]
+    public function delete($id): Response
     {
-        return new RedirectResponse('/');
+        try {
+            $this->articleService->delete($id);
+
+            $url = $this->urlHelper->getAbsoluteUrl(sprintf('/articles', $id));
+            return new RedirectResponse($url);
+        } catch (NoSuchArticleException) {
+            throw $this->createNotFoundException(
+                sprintf('article with id %s not found', $id)
+            );
+        } catch(InvalidArgumentException $e) {
+            throw $this->createNotFoundException(
+                sprintf('article with id %s not found', $id)
+            );
+        } catch(CantDeleteException $e){
+            return new Response(
+                sprintf('Cannot delete article with id %s, please try later', $id)
+            );
+        }
     }
 }

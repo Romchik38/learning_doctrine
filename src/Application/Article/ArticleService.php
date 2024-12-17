@@ -112,4 +112,31 @@ class ArticleService
         }
         return $dtos;
     }
+
+    /**
+     * @throws NoSuchArticleException
+     * @throws InvalidArgumentException
+     * @throws CantDeleteException
+     */
+    public function delete($id): void
+    {
+        $id = Id::fromMixed($id);
+        /** @var Article $model */
+        $model = $this->articleRepository->find($id());
+        if (is_null($model)) {
+            throw new NoSuchArticleException(
+                sprintf('article with id %d not found', $id())
+            );
+        }
+
+        try {
+            $this->entityManager->remove($model);
+            $this->entityManager->flush();
+        } catch(\Exception) {
+            throw new CantDeleteException(
+                sprintf('Cannot delete article with id %s, please try later', $id())
+            );
+        }
+
+    }
 }

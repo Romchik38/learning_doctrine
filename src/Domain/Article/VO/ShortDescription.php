@@ -8,14 +8,16 @@ use InvalidArgumentException;
 
 final class ShortDescription
 {
+    public const MAX_LENGTH = 250;
+
     public function __construct(
         public readonly string $shortDescription
     ) {
         $length = mb_strlen($shortDescription);
         if ( $length === 0) {
             throw new InvalidArgumentException('short description is empty');
-        } elseif ($length > 100) {
-            throw new InvalidArgumentException('short description too long. Expected max 100 chars');
+        } elseif ($length > self::MAX_LENGTH) {
+            throw new InvalidArgumentException('short description too long. Expected max 250 chars');
         }
     }
 
