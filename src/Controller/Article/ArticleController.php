@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Article;
 
 use App\Application\Article\AddFromForm;
 use App\Application\Article\ArticleService;
@@ -22,8 +22,9 @@ class ArticleController extends AbstractController
     #[Route('/article/new', name: 'article_new_get', methods: ['GET', 'HEAD'])]
     public function new(): Response
     {
-        return $this->render('article/new.html.twig', [
+        return $this->render('base.html.twig', [
             'controller_name' => 'ArticleController',
+            'controller_template' => 'article/new.html.twig'
         ]);
     }
 
@@ -50,8 +51,9 @@ class ArticleController extends AbstractController
     {
         try {
             $articleDto = $this->articleService->find($id);
-            return $this->render('article/view.html.twig', [
+            return $this->render('base.html.twig', [
                 'controller_name' => 'ArticleController',
+                'controller_template' => 'article/view.html.twig',
                 'article' => $articleDto
             ]);
         } catch (NoSuchArticleException) {
@@ -63,5 +65,16 @@ class ArticleController extends AbstractController
                 sprintf('article with id %s not found', $id)
             );
         }
+    }
+
+    #[Route('/articles', name:'article_list', methods: ['GET', 'HEAD'])]
+    public function list(): Response{
+        $articles = [1, 2];
+
+        return $this->render('base.html.twig', [
+            'controller_name' => 'ArticleController',
+            'controller_template' => 'article/list.html.twig',
+            'articles' => $articles
+        ]); 
     }
 }

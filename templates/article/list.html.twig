@@ -1,0 +1,9 @@
+{% block body %}
+
+<div class="container">
+    <h1>Article listing page</h1>
+    {% for article in articles %}
+        <li>{{ article }}</li>
+    {% endfor %}
+</div>
+{% endblock %}
