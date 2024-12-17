@@ -8,15 +8,18 @@ use App\Application\Article\CantAddException;
 use App\Application\Article\NoSuchArticleException;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Routing\Attribute\Route;
 
-class ArticleController extends AbstractController
+final class ArticleController extends AbstractController
 {
 
     public function __construct(
-        protected readonly ArticleService $articleService
+        protected readonly ArticleService $articleService,
+        protected UrlHelper $urlHelper,
     ) {}
 
     #[Route('/article/new', name: 'article_new_get', methods: ['GET', 'HEAD'])]
@@ -41,9 +44,9 @@ class ArticleController extends AbstractController
                 sprintf('Error while creating new article: %s', $e->getMessage())
             );
         }
-        return new Response(
-            sprintf('Article created with id: %s', $id())
-        );
+        $url = $this->urlHelper->getAbsoluteUrl(sprintf('/article/%s', $id()));
+        
+        return new RedirectResponse($url);
     }
 
     #[Route('/article/{id}', name: 'article_view', methods: ['GET', 'HEAD'])]
@@ -76,5 +79,32 @@ class ArticleController extends AbstractController
             'controller_template' => 'article/list.html.twig',
             'articles' => $articles
         ]); 
+    }
+
+    #[Route('/article/edit/{id}', name: 'article_edit', methods: ['GET', 'HEAD'])]
+    public function edit($id): Response
+    {
+        try {
+            $articleDto = $this->articleService->find($id);
+            return $this->render('base.html.twig', [
+                'controller_name' => 'ArticleController',
+                'controller_template' => 'article/edit.html.twig',
+                'article' => $articleDto
+            ]);
+        } catch (NoSuchArticleException) {
+            throw $this->createNotFoundException(
+                sprintf('article with id %s not found', $id)
+            );
+        } catch(InvalidArgumentException $e) {
+            throw $this->createNotFoundException(
+                sprintf('article with id %s not found', $id)
+            );
+        }
+    }
+
+    #[Route('/redirect', name: 'redirect', methods: ['GET', 'HEAD'])]
+    public function willredirect(): RedirectResponse
+    {
+        return new RedirectResponse('/');
     }
 }

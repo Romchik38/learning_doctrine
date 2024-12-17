@@ -68,4 +68,12 @@ class Article
 
         return $this;
     }
+
+    public function deactivate(): void {
+        $this->active = false;
+    }
+
+    public function activate(): void {
+        $this->active = true;
+    }
 }

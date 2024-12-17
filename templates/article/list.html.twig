@@ -23,7 +23,7 @@
                           <td>{{ article.name }}</td>
                           <td>{{ article.shortDescription }}</td>
                           <td>{{ article.active }}</td>
-                          <td><a href="#">edit</a></td>
+                          <td><a href="{{ '/article/edit/' ~ article.id }}">edit</a></td>
                           <td><a href="#">delete</a></td>
                     </tr>
                 {% endfor %}

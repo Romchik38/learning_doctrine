@@ -1,0 +1,51 @@
+{% block body %}
+
+<div class="container">
+    <h1>Article edit page</h1>
+    <form action="/article/save" method="post">
+        <div class="mb-3">
+            <label class="form-label" for="name">Id: {{ article.id }}</label>
+            <input type="text" class="form-control" name="id" value="{{ article.id }}" hidden>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="name">Name</label>
+            <input type="text" class="form-control" name="name" required value="{{ article.name }}">
+        </div>
+        <div class="mb-3">
+            <label for="short_description" class="form-label">Short Description</label>
+            <textarea class="form-control" name="short_description" rows="3" required>{{ article.shortDescription }}</textarea>
+        </div>
+        <div class="mb-3">
+            <span>Article is {{ article.active }}</span>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="change_activity" value="no" id="checkbox_active">
+            <label class="form-check-label" for="flexCheckDefault">
+            {% if article.active == 'not active' %}
+                Activate
+            
+            {% elseif article.active == 'active' %}
+                Deactivate
+            {% endif %}
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary my-2">Save</button>
+    </form>
+    <script>
+        activeCheckbox = document.getElementById('checkbox_active');
+        if(activeCheckbox !== null) {
+            activeCheckbox.addEventListener("change", function (e) {
+                checked = e.target.checked;
+                if(checked === true) {
+                    e.target.value = 'yes';
+                } else {
+                    e.target.value = 'no';
+                }
+            });
+        } else {
+            console.log('not found');
+            
+        }
+    </script>
+</div>
+{% endblock %}
