@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\ArticleView;
 
+use App\Application\ArticleView\Views\ArticleActiveDTO;
 use App\Application\ArticleView\Views\ArticleViewDTO;
 use App\Domain\Article\Article;
 use App\Domain\Article\VO\Id;
@@ -63,6 +64,33 @@ class ArticleViewService
                 $model->isActive()
             );
         }
+        return $dtos;
+    }
+
+    /**
+     * @return array<int,ArticleActiveDTO>
+     */
+    public function listActive(): array {
+        $dtos = [];
+        $query = $this->entityManager->createQuery(
+            'SELECT a
+            FROM App\Domain\Article\Article a
+            WHERE a.active = :active'
+        )->setParameter('active', 't');
+
+        $models = $query->getResult();
+
+        foreach ($models as $model) {
+            $id = new Id($model->getId());
+            $name = new Name($model->getName());
+            $shortDescription = new ShortDescription($model->getShortDescription());
+            $dtos[] = new ArticleActiveDTO(
+                $id(),
+                $name(),
+                $shortDescription()
+            );
+        }
+
         return $dtos;
     }
 
