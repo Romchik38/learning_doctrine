@@ -19,11 +19,17 @@
           </thead>
           <tbody>
                 {% for article in articles %}
+                {% set activeColor = '' %}
+                {% if article.active == 'not active' %}
+                    {% set activeColor = 'text-warning bg-secondary' %}
+                {% elseif article.active == 'active' %}
+                    {% set activeColor = 'text-success' %}
+                {% endif %}
                     <tr>
                         <th scope="row">{{ article.id }}</th>
                         <td>{{ article.name }}</td>
                         <td>{{ article.shortDescription }}</td>
-                        <td>{{ article.active }}</td>
+                        <td class="{{ activeColor }}">{{ article.active }}</td>
                         <td><a href="{{ '/article/' ~ article.id }}">view</a></td>
                         <td><a href="{{ '/article/edit/' ~ article.id }}">edit</a></td>
                         <td>
