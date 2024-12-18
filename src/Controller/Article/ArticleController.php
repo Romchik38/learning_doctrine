@@ -50,59 +50,6 @@ final class ArticleController extends AbstractController
         return new RedirectResponse($url);
     }
 
-    #[Route('/article/{id}', name: 'article_view', methods: ['GET', 'HEAD'])]
-    public function view($id): Response
-    {
-        try {
-            $articleDto = $this->articleService->find($id);
-            return $this->render('base.html.twig', [
-                'controller_name' => 'ArticleController',
-                'controller_template' => 'article/view.html.twig',
-                'article' => $articleDto
-            ]);
-        } catch (NoSuchArticleException) {
-            throw $this->createNotFoundException(
-                sprintf('article with id %s not found', $id)
-            );
-        } catch(InvalidArgumentException $e) {
-            throw $this->createNotFoundException(
-                sprintf('article with id %s not found', $id)
-            );
-        }
-    }
-
-    #[Route('/articles', name:'article_list', methods: ['GET', 'HEAD'])]
-    public function list(): Response{
-        $articles = $this->articleService->listAll();
-
-        return $this->render('base.html.twig', [
-            'controller_name' => 'ArticleController',
-            'controller_template' => 'article/list.html.twig',
-            'articles' => $articles
-        ]); 
-    }
-
-    #[Route('/article/edit/{id}', name: 'article_edit', methods: ['GET', 'HEAD'])]
-    public function edit($id): Response
-    {
-        try {
-            $articleDto = $this->articleService->find($id);
-            return $this->render('base.html.twig', [
-                'controller_name' => 'ArticleController',
-                'controller_template' => 'article/edit.html.twig',
-                'article' => $articleDto
-            ]);
-        } catch (NoSuchArticleException) {
-            throw $this->createNotFoundException(
-                sprintf('article with id %s not found', $id)
-            );
-        } catch(InvalidArgumentException $e) {
-            throw $this->createNotFoundException(
-                sprintf('article with id %s not found', $id)
-            );
-        }
-    }
-
     #[Route('/article/delete/{id}', name: 'article_delete', methods: ['POST'])]
     public function delete($id): Response
     {
