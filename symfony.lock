@@ -40,6 +40,12 @@
             "tests/bootstrap.php"
         ]
     },
+    "qossmic/deptrac": {
+        "version": "2.0",
+        "recipe": {
+            "version": "2.0"
+        }
+    },
     "symfony/asset-mapper": {
         "version": "7.2",
         "recipe": {
