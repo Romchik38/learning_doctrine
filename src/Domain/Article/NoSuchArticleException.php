@@ -1,5 +1,5 @@
 <?php
 
-namespace App\Application\Article;
+namespace App\Domain\Article;
 
 final class NoSuchArticleException extends \RuntimeException {}

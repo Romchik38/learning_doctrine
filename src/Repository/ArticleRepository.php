@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+use App\Application\ArticleView\NoSuchArticleException;
 use App\Domain\Article\Article;
 use App\Domain\Article\ArticleRepositoryInterface;
+use App\Domain\Article\CouldNotDeleteException;
 use App\Domain\Article\CouldNotSaveException;
+use App\Domain\Article\VO\Id;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -29,6 +32,27 @@ class ArticleRepository extends ServiceEntityRepository implements ArticleReposi
         } catch (\Exception $e) {
             throw new CouldNotSaveException($e->getMessage());
         }
+    }
+
+    public function delete(Article $model): void {
+        try {
+            $this->entityManager->remove($model);
+            $this->entityManager->flush();
+        } catch(\Exception $e) {
+            throw new CouldNotDeleteException($e->getMessage());
+        }
+    }
+
+    public function getById(Id $id): Article {
+        /** @var Article $model */
+        $model = $this->find($id());
+        if (is_null($model)) {
+            throw new NoSuchArticleException(
+                sprintf('article with id %d not found', $id())
+            );
+        }
+
+        return $model;
     }
 
     //    /**
