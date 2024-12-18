@@ -11,6 +11,12 @@ interface ArticleRepositoryInterface
     /** @throws CouldNotDeleteException */
     public function delete(Article $model): void;
 
+    /** @return array<int,Article> */
+    public function getActive(): array;
+
+    /** @return array<int,Article> */
+    public function getAll(): array;
+
     /** @throws NoSuchArticleException */
     public function getById(Id $id): Article;
 

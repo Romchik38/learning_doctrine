@@ -7,27 +7,27 @@ namespace App\Application\ArticleView;
 use App\Application\ArticleView\Views\ArticleActiveDTO;
 use App\Application\ArticleView\Views\ArticleViewDTO;
 use App\Domain\Article\Article;
+use App\Domain\Article\ArticleRepositoryInterface;
+use App\Domain\Article\NoSuchArticleException;
 use App\Domain\Article\VO\Id;
 use App\Domain\Article\VO\Name;
 use App\Domain\Article\VO\ShortDescription;
-use App\Repository\ArticleRepository;
-use Doctrine\ORM\EntityManagerInterface;
 
 class ArticleViewService
 {
     public function __construct(
-        protected readonly EntityManagerInterface $entityManager,
-        protected readonly ArticleRepository $articleRepository
+        protected readonly ArticleRepositoryInterface $articleRepository
     ) {}
 
     /**
      * @throws NoSuchArticleException
+     * 
      */
     public function find($id): ArticleViewDTO
     {
         $id = Id::fromMixed($id);
         /** @var Article $model */
-        $model = $this->articleRepository->find($id());
+        $model = $this->articleRepository->getById($id);
         if (is_null($model)) {
             throw new NoSuchArticleException(
                 sprintf('article with id %d not found', $id())
@@ -51,7 +51,7 @@ class ArticleViewService
      */
     public function listAll(): array
     {
-        $models = $this->articleRepository->findAll();
+        $models = $this->articleRepository->getAll();
         $dtos = [];
         foreach ($models as $model) {
             $id = new Id($model->getId());
@@ -70,15 +70,10 @@ class ArticleViewService
     /**
      * @return array<int,ArticleActiveDTO>
      */
-    public function listActive(): array {
+    public function listActive(): array
+    {
         $dtos = [];
-        $query = $this->entityManager->createQuery(
-            'SELECT a
-            FROM App\Domain\Article\Article a
-            WHERE a.active = :active'
-        )->setParameter('active', 't');
-
-        $models = $query->getResult();
+        $models = $this->articleRepository->getActive();
 
         foreach ($models as $model) {
             $id = new Id($model->getId());
@@ -93,5 +88,4 @@ class ArticleViewService
 
         return $dtos;
     }
-
 }

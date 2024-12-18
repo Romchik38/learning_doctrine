@@ -2,11 +2,11 @@
 
 namespace App\Repository;
 
-use App\Application\ArticleView\NoSuchArticleException;
 use App\Domain\Article\Article;
 use App\Domain\Article\ArticleRepositoryInterface;
 use App\Domain\Article\CouldNotDeleteException;
 use App\Domain\Article\CouldNotSaveException;
+use App\Domain\Article\NoSuchArticleException;
 use App\Domain\Article\VO\Id;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,6 +53,25 @@ class ArticleRepository extends ServiceEntityRepository implements ArticleReposi
         }
 
         return $model;
+    }
+
+    public function getAll(): array {
+        return $this->findAll();
+    }
+
+    public function getActive(): array {
+        $query = $this->entityManager->createQuery(
+            'SELECT a
+            FROM App\Domain\Article\Article a
+            WHERE a.active = :active'
+        )->setParameter('active', 't');
+
+        $models = $query->getResult();
+        if(is_array($models)) {
+            return $models;
+        } else {
+            return [];
+        }
     }
 
     //    /**
