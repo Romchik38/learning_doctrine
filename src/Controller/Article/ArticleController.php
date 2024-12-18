@@ -4,9 +4,9 @@ namespace App\Controller\Article;
 
 use App\Application\Article\AddFromForm;
 use App\Application\Article\ArticleService;
-use App\Application\Article\CantAddException;
 use App\Application\Article\CantDeleteException;
 use App\Application\Article\NoSuchArticleException;
+use App\Domain\Article\CouldNotSaveException;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -37,8 +37,8 @@ final class ArticleController extends AbstractController
     {
         $params = $request->request->all();
         try {
-            $id = $this->articleService->add(AddFromForm::fromHash($params));
-        } catch (CantAddException) {
+            $id = $this->articleService->save(AddFromForm::fromHash($params));
+        } catch (CouldNotSaveException) {
             return new Response('article was not save, please try later');
         } catch (InvalidArgumentException $e) {
             return new Response(

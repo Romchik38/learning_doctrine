@@ -11,6 +11,7 @@ use App\Domain\Article\VO\Name;
 use App\Domain\Article\VO\ShortDescription;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Domain\Article\CouldNotSaveException;
 
 class ArticleService
 {
@@ -20,11 +21,10 @@ class ArticleService
     ) {}
 
     /**
-     * @throws CantAddException
      * @throws NoSuchArticleException
-     * @throws CantSaveException
+     * @throws CouldNotSaveException
      */
-    public function add(AddFromForm $command): Id
+    public function save(AddFromForm $command): Id
     {
         $name = new Name($command->name);
         $shortDescription = new ShortDescription($command->shortDescription);
@@ -42,7 +42,7 @@ class ArticleService
         if ($changeActivity() === true) {
             $current = $model->isActive();
             if (is_null($current)) {
-                throw new CantSaveException(
+                throw new CouldNotSaveException(
                     sprintf('Cannot change activity of Article %s', $name)
                 );
             }
@@ -53,16 +53,9 @@ class ArticleService
             }
         }
 
-        $this->entityManager->persist($model);
+        $this->articleRepository->save($model);
+        return new Id($model->getId());
 
-        try {
-            $this->entityManager->flush();
-            return new Id($model->getId());
-        } catch (\Exception $e) {
-            throw new CantSaveException(
-                sprintf('article with name %s was not saved', $name())
-            );
-        }
     }
 
     /**
