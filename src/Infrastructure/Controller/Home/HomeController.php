@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Home;
+namespace App\Infrastructure\Controller\Home;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

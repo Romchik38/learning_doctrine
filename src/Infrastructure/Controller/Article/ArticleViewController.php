@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller\Article;
+namespace App\Infrastructure\Controller\Article;
 
-use App\Application\Article\NoSuchArticleException;
 use App\Application\ArticleView\ArticleViewService;
+use App\Domain\Article\NoSuchArticleException;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

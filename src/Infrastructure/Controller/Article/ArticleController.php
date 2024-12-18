@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Article;
+namespace App\Infrastructure\Controller\Article;
 
 use App\Application\Article\AddFromForm;
 use App\Application\Article\ArticleService;
