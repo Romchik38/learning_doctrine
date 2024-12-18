@@ -4,9 +4,9 @@ namespace App\Controller\Article;
 
 use App\Application\Article\AddFromForm;
 use App\Application\Article\ArticleService;
-use App\Application\Article\CantDeleteException;
-use App\Application\Article\NoSuchArticleException;
+use App\Domain\Article\CouldNotDeleteException;
 use App\Domain\Article\CouldNotSaveException;
+use App\Domain\Article\NoSuchArticleException;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -66,7 +66,7 @@ final class ArticleController extends AbstractController
             throw $this->createNotFoundException(
                 sprintf('article with id %s not found', $id)
             );
-        } catch(CantDeleteException $e){
+        } catch(CouldNotDeleteException $e){
             return new Response(
                 sprintf('Cannot delete article with id %s, please try later', $id)
             );
