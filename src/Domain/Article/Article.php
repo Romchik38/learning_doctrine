@@ -12,28 +12,28 @@ class Article
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $shortDescription = null;
 
     #[ORM\Column]
-    private ?bool $active = null;
+    private bool $active;
 
     public function __construct()
     {
         $this->active = false;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -57,16 +57,9 @@ class Article
         return $this;
     }
 
-    public function isActive(): ?bool
+    public function isActive(): bool
     {
         return $this->active;
-    }
-
-    public function setActive(bool $active): static
-    {
-        $this->active = $active;
-
-        return $this;
     }
 
     public function deactivate(): void {

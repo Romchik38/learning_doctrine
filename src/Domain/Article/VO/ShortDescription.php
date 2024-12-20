@@ -17,7 +17,9 @@ final class ShortDescription
         if ( $length === 0) {
             throw new InvalidArgumentException('short description is empty');
         } elseif ($length > self::MAX_LENGTH) {
-            throw new InvalidArgumentException('short description too long. Expected max 250 chars');
+            throw new InvalidArgumentException(
+                sprintf('short description too long. Expected max 250 chars, found %s', $length)
+            );
         }
     }
 
