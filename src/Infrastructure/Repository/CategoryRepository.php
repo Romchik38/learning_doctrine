@@ -20,12 +20,12 @@ class CategoryRepository extends ServiceEntityRepository implements CategoryRepo
     public function __construct(
         ManagerRegistry $registry,
         protected readonly EntityManagerInterface $entityManager,
-        )
-    {
+    ) {
         parent::__construct($registry, Category::class);
     }
 
-    public function save(Category $model): void {
+    public function save(Category $model): void
+    {
         try {
             $this->entityManager->persist($model);
             $this->entityManager->flush();
@@ -34,16 +34,18 @@ class CategoryRepository extends ServiceEntityRepository implements CategoryRepo
         }
     }
 
-    public function delete(Category $model): void {
+    public function delete(Category $model): void
+    {
         try {
             $this->entityManager->remove($model);
             $this->entityManager->flush();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             throw new CouldNotDeleteException($e->getMessage());
         }
     }
 
-    public function getById(Id $id): Category {
+    public function getById(Id $id): Category
+    {
         /** @var Category $model */
         $model = $this->find($id());
         if (is_null($model)) {
@@ -55,23 +57,8 @@ class CategoryRepository extends ServiceEntityRepository implements CategoryRepo
         return $model;
     }
 
-    public function getAll(): array {
+    public function getAll(): array
+    {
         return $this->findAll();
-    }
-
-    /** @todo refactor to SQL */
-    public function getActive(): array {
-        $query = $this->entityManager->createQuery(
-            'SELECT a
-            FROM App\Domain\Article\Article a
-            WHERE a.active = :active'
-        )->setParameter('active', 't');
-
-        $models = $query->getResult();
-        if(is_array($models)) {
-            return $models;
-        } else {
-            return [];
-        }
     }
 }
