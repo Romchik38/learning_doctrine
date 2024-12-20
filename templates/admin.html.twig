@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Marcian stories{% endblock %}</title>
+        <title>{% block title %}Admin panel{% endblock %}</title>
         <link rel="stylesheet" href="/css/bootstrap-5.3.3-dist/css/bootstrap.min.css"/>            
         {% block stylesheets %}
         {% endblock %}
@@ -13,7 +13,7 @@
     </head>
     <body>
         <div class="container-fluid">
-            {% include 'menu.html.twig' %}
+            {% include 'admin-menu.html.twig' %}
             {% include controller_template %}
         </div>
     </body>
