@@ -6,6 +6,7 @@ namespace App\Application\Article;
 
 use App\Domain\Article\Article;
 use App\Domain\Article\ArticleRepositoryInterface;
+use App\Domain\Article\CannotActivateArticle;
 use App\Domain\Article\CouldNotDeleteException;
 use App\Domain\Article\VO\ChangeActivity;
 use App\Domain\Article\VO\Id;
@@ -30,6 +31,7 @@ final class ArticleService
      * @throws CouldNotSaveException
      * @throws InvalidArgumentException
      * @throws NoSuchCategoryException
+     * @throws CannotActivateArticle
      */
     public function save(AddFromForm $command): Id
     {
@@ -47,21 +49,6 @@ final class ArticleService
         $model->setName($name());
         $model->setShortDescription($shortDescription());
 
-        /** activity */
-        if ($changeActivity() === true) {
-            $current = $model->isActive();
-            if (is_null($current)) {
-                throw new CouldNotSaveException(
-                    sprintf('Cannot change activity of Article %s', $name)
-                );
-            }
-            if ($current === true) {
-                $model->deactivate();
-            } else {
-                $model->activate();
-            }
-        }
-
         /** category */
         if (
             $command::CATEGORY_PLACEHOLDER !== $command->categoryId
@@ -74,6 +61,21 @@ final class ArticleService
             $removeCategory = new RemoveCategory($command->categoryRemoveValue);
             if($removeCategory->remove === true) {
                 $model->unsetCategory();
+            }
+        }
+
+        /** activity */
+        if ($changeActivity() === true) {
+            $current = $model->isActive();
+            if (is_null($current)) {
+                throw new CouldNotSaveException(
+                    sprintf('Cannot change activity of Article %s', $name)
+                );
+            }
+            if ($current === true) {
+                $model->deactivate();
+            } else {
+                $model->activate();
             }
         }
 

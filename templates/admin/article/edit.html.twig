@@ -16,20 +16,6 @@
             <textarea class="form-control" name="short_description" rows="3" required maxlength="250">{{ article.shortDescription }}</textarea>
         </div>
         <div class="mb-3">
-            <span>Article is {{ article.active }}</span>
-        </div>
-        <div class="mb-3 form-check">
-            <input class="form-check-input" type="checkbox" name="change_activity" value="no" id="checkbox_active">
-            <label class="form-check-label" for="flexCheckDefault">
-            {% if article.active == 'not active' %}
-                Activate
-            
-            {% elseif article.active == 'active' %}
-                Deactivate
-            {% endif %}
-            </label>
-        </div>
-        <div class="mb-3">
             <h2>Category</h2>
             <div class="current-category">
                 {% set category = article.category %}
@@ -49,11 +35,26 @@
                     {% endif %}
                 {% else %}
                     <p>{{ category.name }}</p>
-                    <label for="category_remove" class="form-label">Remove</label>
                     <input class="form-check-input" type="checkbox" name="category_remove" value="no" id="category_remove">
+                    <label for="category_remove" class="form-label">Remove</label>
                     <input type="hidden" name="category_remove_id" value="{{ category.id }}">
                 {% endif %}
             </div>
+        </div>
+        <div class="mb-3">
+            <h2>Activity</h2>
+            <span>Article is {{ article.active }}</span>
+        </div>
+        <div class="mb-3 form-check">
+            <input class="form-check-input" type="checkbox" name="change_activity" value="no" id="checkbox_active">
+            <label class="form-check-label" for="flexCheckDefault">
+            {% if article.active == 'not active' %}
+                Activate
+            
+            {% elseif article.active == 'active' %}
+                Deactivate
+            {% endif %}
+            </label>
         </div>
         <button type="submit" class="btn btn-primary my-2">Save</button>
     </form>

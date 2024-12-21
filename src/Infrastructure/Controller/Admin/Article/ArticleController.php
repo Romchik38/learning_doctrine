@@ -4,6 +4,7 @@ namespace App\Infrastructure\Controller\Admin\Article;
 
 use App\Application\Article\AddFromForm;
 use App\Application\Article\ArticleService;
+use App\Domain\Article\CannotActivateArticle;
 use App\Domain\Article\CouldNotDeleteException;
 use App\Domain\Article\CouldNotSaveException;
 use App\Domain\Article\NoSuchArticleException;
@@ -53,6 +54,10 @@ final class ArticleController extends AbstractController
         } catch(NoSuchCategoryException) {
             return new Response(
                 sprintf('Selected category with id %s not found', $formData->categoryId)
+            );
+        } catch(CannotActivateArticle $e) {
+            return new Response(
+                sprintf('Can not activate the article: %s', $e->getMessage())
             );
         }
 

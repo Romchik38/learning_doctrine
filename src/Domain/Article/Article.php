@@ -73,6 +73,9 @@ class Article
 
     public function activate(): void
     {
+        if($this->category === null) {
+            throw new CannotActivateArticle('Assign a category to activate article');
+        }
         $this->active = true;
     }
 
