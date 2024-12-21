@@ -7,9 +7,12 @@ use App\Domain\Category\CategoryRepositoryInterface;
 use App\Domain\Category\CouldNotDeleteException;
 use App\Domain\Category\CouldNotSaveException;
 use App\Domain\Category\NoSuchCategoryException;
+use App\Domain\Category\QueryException;
 use App\Domain\Category\VO\Id;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -60,5 +63,32 @@ class CategoryRepository extends ServiceEntityRepository implements CategoryRepo
     public function getAll(): array
     {
         return $this->findAll();
+    }
+
+    public function totalCount(): int {
+        $query = $this->entityManager->createQuery(
+            'SELECT COUNT(c.id) FROM App\Domain\Category\Category c'
+        );
+        try {
+            $count = $query->getSingleScalarResult();
+        } catch(NoResultException $e){
+            throw new QueryException(
+                sprintf('Cannot count categories, because of error: %s', $e->getMessage())
+            );
+        } catch(NonUniqueResultException $e){
+            throw new QueryException(
+                sprintf('Cannot count categories, because of error: %s', $e->getMessage())
+            );
+        } 
+
+        $resultType = gettype($count);
+        
+        if($resultType === 'integer') {
+            return $count;
+        }
+
+        throw new QueryException(
+            sprintf('Unexpecting count result type: %s', $resultType)
+        );
     }
 }

@@ -8,6 +8,7 @@ use App\Application\CategoryView\Views\CategoryViewDTO;
 use App\Domain\Category\Category;
 use App\Domain\Category\CategoryRepositoryInterface;
 use App\Domain\Category\NoSuchCategoryException;
+use App\Domain\Category\QueryException;
 use App\Domain\Category\VO\Id;
 
 final class CategoryViewService
@@ -56,5 +57,13 @@ final class CategoryViewService
             $id(),
             $name()
         );
+    }
+
+    /** 
+     * @throws QueryException
+     */
+    public function totalCount(): int
+    {
+        return $this->categoryRepository->totalCount();
     }
 }

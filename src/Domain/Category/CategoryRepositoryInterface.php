@@ -11,7 +11,10 @@ interface CategoryRepositoryInterface
     /** @throws CouldNotDeleteException */
     public function delete(Category $model): void;
 
-    /** @return array<int,Category> */
+    /**
+     * @throws QueryException
+     * @return array<int,Category> 
+     * */
     public function getAll(): array;
 
     /** @throws NoSuchCategoryException */
@@ -19,4 +22,7 @@ interface CategoryRepositoryInterface
 
     /** @throws CouldNotSaveException */
     public function save(Category $model): void;
+
+    /** @throws QueryException */
+    public function totalCount(): int;
 }
