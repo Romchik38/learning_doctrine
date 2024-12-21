@@ -2,6 +2,7 @@
 
 namespace App\Domain\Article;
 
+use App\Domain\Category\Category;
 use App\Infrastructure\Repository\ArticleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,6 +23,9 @@ class Article
 
     #[ORM\Column]
     private bool $active;
+
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
+    private Category|null $category = null;
 
     public function __construct()
     {
@@ -62,11 +66,23 @@ class Article
         return $this->active;
     }
 
-    public function deactivate(): void {
+    public function deactivate(): void
+    {
         $this->active = false;
     }
 
-    public function activate(): void {
+    public function activate(): void
+    {
         $this->active = true;
+    }
+
+    public function changeCategory(Category $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function unsetCategory(): void
+    {
+        $this->category = null;
     }
 }
