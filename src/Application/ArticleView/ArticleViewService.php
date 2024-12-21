@@ -10,6 +10,7 @@ use App\Application\ArticleView\Views\CategoryViewDTO;
 use App\Domain\Article\Article;
 use App\Domain\Article\ArticleRepositoryInterface;
 use App\Domain\Article\NoSuchArticleException;
+use App\Domain\Article\QueryException;
 use App\Domain\Article\VO\Id;
 use App\Domain\Article\VO\Name;
 use App\Domain\Article\VO\ShortDescription;
@@ -95,5 +96,13 @@ class ArticleViewService
             $model->isActive(),
             $category
         );
+    }
+
+    /** 
+     * @throws QueryException
+     */
+    public function totalCount(): int
+    {
+        return $this->articleRepository->totalCount();
     }
 }

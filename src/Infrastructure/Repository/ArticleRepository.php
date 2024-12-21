@@ -7,9 +7,12 @@ use App\Domain\Article\ArticleRepositoryInterface;
 use App\Domain\Article\CouldNotDeleteException;
 use App\Domain\Article\CouldNotSaveException;
 use App\Domain\Article\NoSuchArticleException;
+use App\Domain\Article\QueryException;
 use App\Domain\Article\VO\Id;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -74,29 +77,31 @@ class ArticleRepository extends ServiceEntityRepository implements ArticleReposi
         }
     }
 
-    //    /**
-    //     * @return Article[] Returns an array of Article objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('a.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function totalCount(): int {
+        $query = $this->entityManager->createQuery(
+            'SELECT COUNT(a.id) FROM App\Domain\Article\Article a'
+        );
+        try {
+            $count = $query->getSingleScalarResult();
+        } catch(NoResultException $e){
+            throw new QueryException(
+                sprintf('Cannot count articles, because of error: %s', $e->getMessage())
+            );
+        } catch(NonUniqueResultException $e){
+            throw new QueryException(
+                sprintf('Cannot count articles, because of error: %s', $e->getMessage())
+            );
+        } 
 
-    //    public function findOneBySomeField($value): ?Article
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        $resultType = gettype($count);
+        
+        if($resultType === 'integer') {
+            return $count;
+        }
+
+        throw new QueryException(
+            sprintf('Unexpecting count result type: %s', $resultType)
+        );
+    }
 
 }

@@ -22,4 +22,7 @@ interface ArticleRepositoryInterface
 
     /** @throws CouldNotSaveException */
     public function save(Article $model): void;
+
+    /** @throws QueryException */
+    public function totalCount(): int;
 }
