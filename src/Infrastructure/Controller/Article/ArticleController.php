@@ -32,18 +32,22 @@ final class ArticleController extends AbstractController
         ]);
     }
 
-    /** @todo NoSuchArticle */
     #[Route('/article/save', name: 'article_save', methods: ['POST'])]
     public function save(Request $request): Response
     {
         $params = $request->request->all();
+        $formData = AddFromForm::fromHash($params);
         try {
-            $id = $this->articleService->save(AddFromForm::fromHash($params));
+            $id = $this->articleService->save($formData);
         } catch (CouldNotSaveException) {
             return new Response('article was not save, please try later');
         } catch (InvalidArgumentException $e) {
             return new Response(
                 sprintf('Error while creating new article: %s', $e->getMessage())
+            );
+        } catch(NoSuchArticleException) {
+            return new Response(
+                sprintf('Article with id %s not found', $formData->id)
             );
         }
         $url = $this->urlHelper->getAbsoluteUrl(sprintf('/article/%s', $id()));
