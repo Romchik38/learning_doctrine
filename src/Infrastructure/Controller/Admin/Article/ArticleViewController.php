@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Controller\Article;
+namespace App\Infrastructure\Controller\Admin\Article;
 
 use App\Application\ArticleView\ArticleViewService;
 use App\Domain\Article\NoSuchArticleException;
@@ -19,14 +19,14 @@ final class ArticleViewController extends AbstractController
     ) {}
 
 
-    #[Route('/article/{id}', name: 'article_view', methods: ['GET', 'HEAD'])]
+    #[Route('/admin/article/{id}', name: 'admin_article_view', methods: ['GET', 'HEAD'])]
     public function view($id): Response
     {
         try {
             $articleDto = $this->articleViewService->find($id);
-            return $this->render('base.html.twig', [
+            return $this->render('admin.html.twig', [
                 'controller_name' => 'ArticleController',
-                'controller_template' => 'article/view.html.twig',
+                'controller_template' => 'admin/article/view.html.twig',
                 'article' => $articleDto
             ]);
         } catch (NoSuchArticleException) {
@@ -40,26 +40,26 @@ final class ArticleViewController extends AbstractController
         }
     }
 
-    #[Route('/articles', name: 'article_list', methods: ['GET', 'HEAD'])]
+    #[Route('/admin/article', name: 'admin_article_list', methods: ['GET', 'HEAD'])]
     public function list(): Response
     {
         $articles = $this->articleViewService->listAll();
 
-        return $this->render('base.html.twig', [
+        return $this->render('admin.html.twig', [
             'controller_name' => 'ArticleController',
-            'controller_template' => 'article/list.html.twig',
+            'controller_template' => 'admin/article/list.html.twig',
             'articles' => $articles
         ]);
     }
 
-    #[Route('/article/edit/{id}', name: 'article_edit', methods: ['GET', 'HEAD'])]
+    #[Route('/admin/article/edit/{id}', name: 'admin_article_edit', methods: ['GET', 'HEAD'])]
     public function edit($id): Response
     {
         try {
             $articleDto = $this->articleViewService->find($id);
-            return $this->render('base.html.twig', [
+            return $this->render('admin.html.twig', [
                 'controller_name' => 'ArticleController',
-                'controller_template' => 'article/edit.html.twig',
+                'controller_template' => 'admin/article/edit.html.twig',
                 'article' => $articleDto
             ]);
         } catch (NoSuchArticleException) {

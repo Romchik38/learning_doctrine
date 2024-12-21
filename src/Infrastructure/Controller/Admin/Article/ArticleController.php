@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Controller\Article;
+namespace App\Infrastructure\Controller\Admin\Article;
 
 use App\Application\Article\AddFromForm;
 use App\Application\Article\ArticleService;
@@ -23,16 +23,16 @@ final class ArticleController extends AbstractController
         protected UrlHelper $urlHelper,
     ) {}
 
-    #[Route('/article/new', name: 'article_new_get', methods: ['GET', 'HEAD'])]
+    #[Route('/admin/article/new', name: 'admin_article_new_get', methods: ['GET', 'HEAD'])]
     public function new(): Response
     {
-        return $this->render('base.html.twig', [
+        return $this->render('admin.html.twig', [
             'controller_name' => 'ArticleController',
-            'controller_template' => 'article/new.html.twig'
+            'controller_template' => 'admin/article/new.html.twig'
         ]);
     }
 
-    #[Route('/article/save', name: 'article_save', methods: ['POST'])]
+    #[Route('/admin/article/save', name: 'admin_article_save', methods: ['POST'])]
     public function save(Request $request): Response
     {
         $params = $request->request->all();
@@ -50,18 +50,18 @@ final class ArticleController extends AbstractController
                 sprintf('Article with id %s not found', $formData->id)
             );
         }
-        $url = $this->urlHelper->getAbsoluteUrl(sprintf('/article/%s', $id()));
+        $url = $this->urlHelper->getAbsoluteUrl(sprintf('/admin/article/%s', $id()));
         
         return new RedirectResponse($url);
     }
 
-    #[Route('/article/delete/{id}', name: 'article_delete', methods: ['POST'])]
+    #[Route('/admin/article/delete/{id}', name: 'admin_article_delete', methods: ['POST'])]
     public function delete($id): Response
     {
         try {
             $this->articleService->delete($id);
 
-            $url = $this->urlHelper->getAbsoluteUrl('/articles');
+            $url = $this->urlHelper->getAbsoluteUrl('/admin/article');
             return new RedirectResponse($url);
         } catch (NoSuchArticleException) {
             throw $this->createNotFoundException(

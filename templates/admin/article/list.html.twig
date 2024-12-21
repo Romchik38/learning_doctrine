@@ -3,7 +3,7 @@
 <div class="container">
       <h1>Article listing page</h1>
       <div class="text-end">
-            <a class="btn btn-primary" href="/article/new" role="button">New</a>
+            <a class="btn btn-primary" href="/admin/article/new" role="button">New</a>
       </div>
       <table class="table">
           <thead>
@@ -30,10 +30,10 @@
                         <td>{{ article.name }}</td>
                         <td>{{ article.shortDescription }}</td>
                         <td class="{{ activeColor }}">{{ article.active }}</td>
-                        <td><a href="{{ '/article/' ~ article.id }}">view</a></td>
-                        <td><a href="{{ '/article/edit/' ~ article.id }}">edit</a></td>
+                        <td><a href="{{ '/admin/article/' ~ article.id }}">view</a></td>
+                        <td><a href="{{ '/admin/article/edit/' ~ article.id }}">edit</a></td>
                         <td>
-                            <form action="{{ '/article/delete/' ~ article.id }}" method="post">
+                            <form action="{{ '/admin/article/delete/' ~ article.id }}" method="post">
                                 <button type="submit" class="btn btn-secondary my-2 btn-sm py-0">delete</button>
                             </form>
                         </td>
@@ -42,7 +42,7 @@
           </tbody>
       </table>
       <div class="text-end">
-            <a class="btn btn-primary" href="/article/new" role="button">New</a>
+            <a class="btn btn-primary" href="/admin/article/new" role="button">New</a>
       </div>
 </div>
 {% endblock %}
