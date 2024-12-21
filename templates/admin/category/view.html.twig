@@ -1,0 +1,9 @@
+{% block body %}
+
+<div class="container">
+    <h1>{{ category.name }}</h1>
+    <div>
+        <a class="btn btn-primary my-2" href="/admin/category/edit/{{ category.id }}" role="button">Edit</a>
+    </div>
+</div>
+{% endblock %}

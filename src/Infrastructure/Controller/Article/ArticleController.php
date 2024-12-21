@@ -32,6 +32,7 @@ final class ArticleController extends AbstractController
         ]);
     }
 
+    /** @todo NoSuchArticle */
     #[Route('/article/save', name: 'article_save', methods: ['POST'])]
     public function save(Request $request): Response
     {
@@ -56,15 +57,15 @@ final class ArticleController extends AbstractController
         try {
             $this->articleService->delete($id);
 
-            $url = $this->urlHelper->getAbsoluteUrl(sprintf('/articles', $id));
+            $url = $this->urlHelper->getAbsoluteUrl('/articles');
             return new RedirectResponse($url);
         } catch (NoSuchArticleException) {
             throw $this->createNotFoundException(
                 sprintf('article with id %s not found', $id)
             );
         } catch(InvalidArgumentException $e) {
-            throw $this->createNotFoundException(
-                sprintf('article with id %s not found', $id)
+            return new Response(
+                sprintf('Cannot delete article with id %s: %s', $id, $e->getMessage())
             );
         } catch(CouldNotDeleteException $e){
             return new Response(

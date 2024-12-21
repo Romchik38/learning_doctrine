@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Category;
 
+use App\Domain\Category\VO\Id;
 use App\Domain\Category\VO\Name;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,6 +25,14 @@ final class Category
     public function __construct(Name $name)
     {
         $this->reName($name);
+    }
+
+    public function id(): Id {
+        return new Id($this->id);
+    }
+
+    public function name(): Name {
+        return new Name($this->name);
     }
 
     public function reName(Name $name): void

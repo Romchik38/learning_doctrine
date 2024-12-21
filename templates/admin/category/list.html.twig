@@ -1,0 +1,38 @@
+{% block body %}
+
+<div class="container">
+      <h1>Category listing page</h1>
+      <div class="text-end">
+            <a class="btn btn-primary" href="/admin/category/new" role="button">New</a>
+      </div>
+      <table class="table">
+          <thead>
+                <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">View</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                </tr>
+          </thead>
+          <tbody>
+                {% for category in categories %}
+                    <tr>
+                        <th scope="row">{{ category.id }}</th>
+                        <td>{{ category.name }}</td>
+                        <td><a href="{{ '/admin/category/' ~ category.id }}">view</a></td>
+                        <td><a href="{{ '/admin/category/edit/' ~ category.id }}">edit</a></td>
+                        <td>
+                            <form action="{{ '/admin/category/delete/' ~ category.id }}" method="post">
+                                <button type="submit" class="btn btn-secondary my-2 btn-sm py-0">delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+          </tbody>
+      </table>
+      <div class="text-end">
+            <a class="btn btn-primary" href="/admin/category/new" role="button">New</a>
+      </div>
+</div>
+{% endblock %}
