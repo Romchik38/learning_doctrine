@@ -12,18 +12,24 @@ use App\Domain\Article\VO\Id;
 use App\Domain\Article\VO\Name;
 use App\Domain\Article\VO\ShortDescription;
 use App\Domain\Article\CouldNotSaveException;
+use App\Domain\Article\VO\RemoveCategory;
+use App\Domain\Category\CategoryRepositoryInterface;
+use App\Domain\Category\NoSuchCategoryException;
+use App\Domain\Category\VO\Id as CategoryId;
 use InvalidArgumentException;
 
-class ArticleService
+final class ArticleService
 {
     public function __construct(
-        protected readonly ArticleRepositoryInterface $articleRepository
+        private readonly ArticleRepositoryInterface $articleRepository,
+        private readonly CategoryRepositoryInterface $categoryRepository
     ) {}
 
     /**
      * @throws NoSuchArticleException
      * @throws CouldNotSaveException
      * @throws InvalidArgumentException
+     * @throws NoSuchCategoryException
      */
     public function save(AddFromForm $command): Id
     {
@@ -41,6 +47,7 @@ class ArticleService
         $model->setName($name());
         $model->setShortDescription($shortDescription());
 
+        /** activity */
         if ($changeActivity() === true) {
             $current = $model->isActive();
             if (is_null($current)) {
@@ -55,6 +62,22 @@ class ArticleService
             }
         }
 
+        /** category */
+        if (
+            $command::CATEGORY_PLACEHOLDER !== $command->categoryId
+            && strlen($command->categoryId) > 0
+        ) {
+            $categoryId = CategoryId::fromString($command->categoryId);
+            $categoryModel = $this->categoryRepository->getById($categoryId);
+            $model->changeCategory($categoryModel);
+        } elseif (strlen($command->categoryRemoveValue) > 0) {
+            $removeCategory = new RemoveCategory($command->categoryRemoveValue);
+            if($removeCategory->remove === true) {
+                $model->unsetCategory();
+            }
+        }
+
+        /** save */
         $this->articleRepository->save($model);
         return new Id($model->getId());
     }

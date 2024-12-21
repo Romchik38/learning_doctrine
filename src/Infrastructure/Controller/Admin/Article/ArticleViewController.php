@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Controller\Admin\Article;
 
 use App\Application\ArticleView\ArticleViewService;
+use App\Application\CategoryView\CategoryViewService;
 use App\Domain\Article\NoSuchArticleException;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,7 @@ final class ArticleViewController extends AbstractController
 
     public function __construct(
         protected readonly ArticleViewService $articleViewService,
+        protected readonly CategoryViewService $categoryViewService,
         protected UrlHelper $urlHelper,
     ) {}
 
@@ -57,10 +59,13 @@ final class ArticleViewController extends AbstractController
     {
         try {
             $articleDto = $this->articleViewService->find($id);
+            $categoriesAll = $this->categoryViewService->listAll();
+
             return $this->render('admin.html.twig', [
                 'controller_name' => 'ArticleController',
                 'controller_template' => 'admin/article/edit.html.twig',
-                'article' => $articleDto
+                'article' => $articleDto,
+                'categories_all' => $categoriesAll
             ]);
         } catch (NoSuchArticleException) {
             throw $this->createNotFoundException(

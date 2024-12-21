@@ -6,8 +6,8 @@ namespace App\Application\Category;
 
 final class AddFromForm
 {
-    public const id_field = 'id';
-    public const name_field = 'name';
+    public const ID_FIELD = 'id';
+    public const NAME_FIELD = 'name';
 
     public function __construct(
         public readonly string $id,
@@ -17,8 +17,8 @@ final class AddFromForm
     public static function fromHash(array $hash): self
     {
         return new self(
-            $hash[self::id_field] ?? '',
-            $hash[self::name_field] ?? ''
+            $hash[self::ID_FIELD] ?? '',
+            $hash[self::NAME_FIELD] ?? ''
         );
     }
 }

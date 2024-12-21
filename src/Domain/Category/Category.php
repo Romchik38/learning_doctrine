@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'category')]
-final class Category
+class Category
 {
 
     #[ORM\Id]

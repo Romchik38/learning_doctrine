@@ -35,17 +35,23 @@
                 {% set category = article.category %}
                 {% if category == null %}
                     <span class="text-warning bg-secondary">not in category</span><br>
+
+                    {% if categories_all|length > 0 %}
                     <label for="category_select" class="form-label">Choose</label>
                     <select class="form-select" name="category_select">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option value="placeholder" selected>Choose a category</option>
+                        {% for category in categories_all %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
                     </select>
+                    {% else %}
+                        No categories available. <a href="/admin/category/new">Create a new one.</a>
+                    {% endif %}
                 {% else %}
-                    <span>{{ category.name }}</span>
+                    <p>{{ category.name }}</p>
                     <label for="category_remove" class="form-label">Remove</label>
-                    <input class="form-check-input" type="checkbox" name="remove_category" value="no" id="remove_category">
+                    <input class="form-check-input" type="checkbox" name="category_remove" value="no" id="category_remove">
+                    <input type="hidden" name="category_remove_id" value="{{ category.id }}">
                 {% endif %}
             </div>
         </div>
@@ -63,8 +69,22 @@
                 }
             });
         } else {
-            console.log('not found');
-            
+            console.error('Active checkbox input field not found'); 
+        }
+    </script>
+    <script>
+        categoryRemoveCheckbox = document.getElementById('category_remove');
+        if(categoryRemoveCheckbox !== null) {
+            categoryRemoveCheckbox.addEventListener("change", function (e) {
+                checked = e.target.checked;
+                if(checked === true) {
+                    e.target.value = 'yes';
+                } else {
+                    e.target.value = 'no';
+                }
+            });
+        } else {
+            console.error('Remove category checkbox input field not found'); 
         }
     </script>
 </div>

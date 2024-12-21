@@ -16,8 +16,11 @@
             <span>{{ category.name }}</span>
         {% endif %}
     </div>
-    <div>
+    <div class="text-end">
         <a class="btn btn-primary my-2" href="/admin/article/edit/{{ article.id }}" role="button">Edit</a>
+    </div>
+    <div>
+        <a href="/admin/article">list all</a>
     </div>
 </div>
 {% endblock %}

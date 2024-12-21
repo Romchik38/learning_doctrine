@@ -7,6 +7,7 @@ use App\Application\Article\ArticleService;
 use App\Domain\Article\CouldNotDeleteException;
 use App\Domain\Article\CouldNotSaveException;
 use App\Domain\Article\NoSuchArticleException;
+use App\Domain\Category\NoSuchCategoryException;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -49,7 +50,13 @@ final class ArticleController extends AbstractController
             return new Response(
                 sprintf('Article with id %s not found', $formData->id)
             );
+        } catch(NoSuchCategoryException) {
+            return new Response(
+                sprintf('Selected category with id %s not found', $formData->categoryId)
+            );
         }
+
+        /** success */
         $url = $this->urlHelper->getAbsoluteUrl(sprintf('/admin/article/%s', $id()));
         
         return new RedirectResponse($url);
