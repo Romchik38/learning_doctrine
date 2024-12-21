@@ -18,7 +18,7 @@
         <div class="mb-3">
             <span>Article is {{ article.active }}</span>
         </div>
-        <div class="form-check">
+        <div class="mb-3 form-check">
             <input class="form-check-input" type="checkbox" name="change_activity" value="no" id="checkbox_active">
             <label class="form-check-label" for="flexCheckDefault">
             {% if article.active == 'not active' %}
@@ -28,6 +28,26 @@
                 Deactivate
             {% endif %}
             </label>
+        </div>
+        <div class="mb-3">
+            <h2>Category</h2>
+            <div class="current-category">
+                {% set category = article.category %}
+                {% if category == null %}
+                    <span class="text-warning bg-secondary">not in category</span><br>
+                    <label for="category_select" class="form-label">Choose</label>
+                    <select class="form-select" name="category_select">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                {% else %}
+                    <span>{{ category.name }}</span>
+                    <label for="category_remove" class="form-label">Remove</label>
+                    <input class="form-check-input" type="checkbox" name="remove_category" value="no" id="remove_category">
+                {% endif %}
+            </div>
         </div>
         <button type="submit" class="btn btn-primary my-2">Save</button>
     </form>

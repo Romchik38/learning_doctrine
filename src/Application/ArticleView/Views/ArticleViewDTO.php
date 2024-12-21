@@ -13,6 +13,7 @@ final class ArticleViewDTO
         public readonly string $name,
         public readonly string $shortDescription,
         bool $active,
+        public readonly CategoryViewDTO|null $category
     ) {
         $this->active = ($active === true) ? 'active' : 'not active';
     }

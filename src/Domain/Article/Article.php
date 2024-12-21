@@ -85,4 +85,8 @@ class Article
     {
         $this->category = null;
     }
+
+    public function category(): null|Category {
+        return $this->category;
+    }
 }

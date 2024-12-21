@@ -1,9 +1,20 @@
 {% block body %}
 
 <div class="container">
-    <h1>{{ article.name }}</h1>
+    <h2>Name</h2> 
+    <p>{{ article.name }}</p>
+    <h2>Short Description</h2> 
     <div class="short-description my-2">
         {{ article.shortDescription }}
+    </div>
+    <div class="category">
+        {% set category = article.category %}
+        <h2>Category</h2> 
+        {% if category == null %}
+            <span class="text-warning bg-secondary">not in category</span>
+        {% else %}
+            <span>{{ category.name }}</span>
+        {% endif %}
     </div>
     <div>
         <a class="btn btn-primary my-2" href="/admin/article/edit/{{ article.id }}" role="button">Edit</a>

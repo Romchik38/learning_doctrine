@@ -6,6 +6,7 @@ namespace App\Application\ArticleView;
 
 use App\Application\ArticleView\Views\ArticleActiveDTO;
 use App\Application\ArticleView\Views\ArticleViewDTO;
+use App\Application\ArticleView\Views\CategoryViewDTO;
 use App\Domain\Article\Article;
 use App\Domain\Article\ArticleRepositoryInterface;
 use App\Domain\Article\NoSuchArticleException;
@@ -34,16 +35,7 @@ class ArticleViewService
             );
         }
 
-        $id = new Id($model->getId());
-        $name = new Name($model->getName());
-        $shortDescription = new ShortDescription($model->getShortDescription());
-
-        return new ArticleViewDTO(
-            $id(),
-            $name(),
-            $shortDescription(),
-            $model->isActive()
-        );
+        return $this->createArticleViewDTO($model);
     }
 
     /**
@@ -54,15 +46,7 @@ class ArticleViewService
         $models = $this->articleRepository->getAll();
         $dtos = [];
         foreach ($models as $model) {
-            $id = new Id($model->getId());
-            $name = new Name($model->getName());
-            $shortDescription = new ShortDescription($model->getShortDescription());
-            $dtos[] = new ArticleViewDTO(
-                $id(),
-                $name(),
-                $shortDescription(),
-                $model->isActive()
-            );
+            $dtos[] = $this->createArticleViewDTO($model);
         }
         return $dtos;
     }
@@ -87,5 +71,29 @@ class ArticleViewService
         }
 
         return $dtos;
+    }
+
+    protected function createArticleViewDTO(Article $model): ArticleViewDTO
+    {
+        $id = new Id($model->getId());
+        $name = new Name($model->getName());
+        $shortDescription = new ShortDescription($model->getShortDescription());
+
+        $category = $model->category();
+        if (!is_null($category)) {
+            $categoryId = $category->id();
+            $categoryName = $category->name();
+            $category =  new CategoryViewDTO(
+                $categoryId(),
+                $categoryName()
+            );
+        }
+        return new ArticleViewDTO(
+            $id(),
+            $name(),
+            $shortDescription(),
+            $model->isActive(),
+            $category
+        );
     }
 }
