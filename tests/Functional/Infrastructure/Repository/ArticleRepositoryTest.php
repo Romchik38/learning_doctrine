@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Infrastructure\Repository;
 
+use App\Domain\Article\Article;
 use App\Domain\Article\ArticleRepositoryInterface;
 use App\Domain\Article\VO\Id;
-use App\Infrastructure\Repository\ArticleRepository;
-use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ArticleRepositoryTest extends KernelTestCase{
@@ -19,17 +18,18 @@ class ArticleRepositoryTest extends KernelTestCase{
         $kernel = self::bootKernel();
 
         $container = $kernel->getContainer();
+
         $doctrine = $container->get('doctrine');
         $this->entityManager = $doctrine->getManager();
         
-        // $this->articleRepository = $this->entityManager->getRepository(ArticleRepository::class);
+        $this->articleRepository = $this->entityManager->getRepository(Article::class);
     }
 
     public function testGetById(): void{
 
-        // $article = $this->articleRepository->getById(new Id(6));
+        $article = $this->articleRepository->getById(new Id(1));
 
-        // $this->assertSame('Пригоди Луні Пака на Марсі', $article->getName());
+        $this->assertSame('Article1 name', $article->getName());
     }
 
     protected function tearDown(): void
