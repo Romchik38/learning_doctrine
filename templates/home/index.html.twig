@@ -1,15 +1,24 @@
 <div class="container-md">
     <div class="row">
-        <h1 class="text-center my-3">Marcian stories</h1>
-        <p class="lead">Wellcome to our site. On this page you can see only active articles. Please, visit <a href="/admin">admin panel</a> to add new or edit existing story.</p>
-        {% for article in active_articles %}
-            <div class="col-md-4">
-                <div class="border p-2">
-                    <h2>{{ article.name }}</h2>
-                    <p>{{ article.shortDescription }}</p>
-                    <footer><a href="#">Read</a></footer>
-                </div>
+        <div class="col-md-8">
+            <div class="row">
+                <h1 class="text-center my-3">Marcian stories</h1>
+                <p class="lead">Wellcome to our site. On this page you can see only active articles. Please, visit <a href="/admin">admin panel</a> to add new or edit existing story.</p>
+                {% for article in active_articles %}
+                    <div class="col-md-6">
+                        <div class="border p-2">
+                            <h2>{{ article.name }}</h2>
+                            <p>{{ article.shortDescription }}</p>
+                            <footer><a href="#">Read</a></footer>
+                        </div>
+                    </div>
+                {% endfor %}    
             </div>
-        {% endfor %}    
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <h3 class="text-center my-3">Continue reading</h2>
+            </div>  
+        <div class="col-md-4">
     </div>
 </div>
