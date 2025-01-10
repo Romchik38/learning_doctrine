@@ -39,6 +39,15 @@ class ArticleViewService
         return $this->createArticleViewDTO($model);
     }
 
+    public function findActive($id): ArticleViewDTO
+    {
+        $article = $this->find($id);
+        if ($article->active === false) {
+            throw new NoSuchArticleException('Article with id %s is not active');
+        }
+        return $article;
+    }
+
     /**
      * @return array<int,ArticleViewDTO>
      */

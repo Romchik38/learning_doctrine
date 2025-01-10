@@ -1,0 +1,15 @@
+{% block body %}
+
+<div class="container">
+    <h1>{{ article.name }}</h1> 
+    <p class="short-description my-2">
+        {{ article.shortDescription }}
+    </p>
+    <div class="category">
+        <p>Category: <em>{{ article.category.name }}</em></p> 
+    </div>
+    <div>
+        <a href="#">list all</a>
+    </div>
+</div>
+{% endblock %}
