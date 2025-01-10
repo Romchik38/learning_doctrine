@@ -16,9 +16,20 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="row">
-                <h3 class="text-center my-3">Continue reading</h2>
-            </div>  
+            {% if continue_reading != null %}        
+                <h3 class="text-secondary text-center my-3">Continue reading</h2>
+                <a class="link-none" href="#">
+                    <div class="row">
+                        <div class="col-9">
+                            <h5 class="text-secondary">{{ continue_reading.name }}</h5>
+                            <p class="text-secondary">Read</p>
+                        </div>
+                        <div class="col-3 text-center">
+                            <img class="img-fluid" src="/img/common/mars-car-100.webp" width="100px">
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
         <div class="col-md-4">
     </div>
 </div>

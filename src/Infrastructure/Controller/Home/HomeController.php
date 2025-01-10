@@ -22,10 +22,13 @@ final class HomeController extends AbstractController{
     public function index(): Response {
         $dtos =  $this->articleViewService->listActive();
 
+        $continueReading = ['name' => 'Some name', 'link' => '#'];
+
         return $this->render('base.html.twig', [
             'controller_name' => 'HomeController',
             'controller_template' => 'home/index.html.twig',
-            'active_articles' => $dtos
+            'active_articles' => $dtos,
+            'continue_reading' => $continueReading
         ]);
     }
 }
