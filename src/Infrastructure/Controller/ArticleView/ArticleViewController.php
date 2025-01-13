@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Controller\ArticleView;
 
 use App\Application\ArticleView\ArticleViewService;
+use App\Application\ArticleView\Views\ArticleViewDTO;
 use App\Application\LastVisitedArticles\CouldNotSaveArticleException;
 use App\Application\LastVisitedArticles\LastVisitedArticlesService;
 use App\Application\LastVisitedArticles\Views\Article;
@@ -30,21 +31,7 @@ final class ArticleViewController extends AbstractController
         try {
             $articleDto = $this->articleViewService->findActive($id);
 
-            try {
-                $this->lastVisitedArticlesService->saveLastArticle(
-                    new Article(
-                        $articleDto->name,
-                        $this->generateUrl('article_view', ['id' => $id])
-                    )
-                );
-            } catch (CouldNotSaveArticleException) {
-                $this->logger->error(
-                    sprintf(
-                        'Last viewed article service did not save article with id %s',
-                        $id
-                    )
-                );
-            }
+            $this->addToLastVisited($articleDto);
 
             return $this->render('base.html.twig', [
                 'controller_name' => 'ArticleController',
@@ -60,5 +47,23 @@ final class ArticleViewController extends AbstractController
                 sprintf('article with id %s not found', $id)
             );
         }
+    }
+
+    protected function addToLastVisited(ArticleViewDTO $dto):void {
+        try {
+            $this->lastVisitedArticlesService->saveLastArticle(
+                new Article(
+                    $dto->name,
+                    $this->generateUrl('article_view', ['id' => $dto->id])
+                )
+            );
+        } catch (CouldNotSaveArticleException) {
+            $this->logger->error(
+                sprintf(
+                    'Last viewed article service did not save article with id %s',
+                    $dto->id
+                )
+            );
+        }        
     }
 }
