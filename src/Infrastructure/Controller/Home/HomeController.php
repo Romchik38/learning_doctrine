@@ -7,7 +7,10 @@ namespace App\Infrastructure\Controller\Home;
 use App\Application\ArticleView\ArticleViewService;
 use App\Application\LastVisitedArticles\LastVisitedArticlesService;
 use App\Application\LastVisitedArticles\NoSuchArticleException;
+use App\Event\HomePage;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,7 +19,8 @@ final class HomeController extends AbstractController
 
     public function __construct(
         protected readonly ArticleViewService $articleViewService,
-        protected readonly LastVisitedArticlesService $lastVisitedArticlesService
+        protected readonly LastVisitedArticlesService $lastVisitedArticlesService,
+        protected readonly EventDispatcherInterface $eventDispatcher
     ) {}
 
     #[Route('/', name: 'homepage_index', methods: ['GET', 'HEAD'])]
@@ -29,6 +33,11 @@ final class HomeController extends AbstractController
         } catch (NoSuchArticleException) {
             $lastViewedArticle = null;
         }
+
+        $this->eventDispatcher->dispatch(
+            new HomePage(new DateTime()),
+            'homepage.event'
+        );
 
         return $this->render('base.html.twig', [
             'controller_name' => 'HomeController',

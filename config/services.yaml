@@ -25,3 +25,6 @@ services:
 
     App\EventListener\RequestListener:
         tags: [kernel.event_listener]
+    
+    App\EventListener\HomepageListener:
+        tags: [homepage.event]
