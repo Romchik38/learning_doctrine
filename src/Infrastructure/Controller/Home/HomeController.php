@@ -34,10 +34,8 @@ final class HomeController extends AbstractController
             $lastViewedArticle = null;
         }
 
-        $this->eventDispatcher->dispatch(
-            new HomePage(new DateTime()),
-            'homepage.event'
-        );
+        $event = new HomePage(new DateTime());
+        $this->eventDispatcher->dispatch($event, 'homepage.event');
 
         return $this->render('base.html.twig', [
             'controller_name' => 'HomeController',
