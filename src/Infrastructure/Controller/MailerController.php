@@ -16,8 +16,8 @@ class MailerController extends AbstractController
     public function sendEmail(MailerInterface $mailer): Response
     {
         $email = (new Email())
-            ->from('ser@mail.ozone.com.ua')
-            ->to('ser@mail.ozone.com.ua')
+            ->from('ser@localhost')
+            ->to('ser@localhost')
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
@@ -27,6 +27,7 @@ class MailerController extends AbstractController
             ->html('<p>See Twig integration for better HTML integration!</p>');
 
         $mailer->send($email);
+        //$res = mail('ser@localhost', 'helo', 'from symf');
 
         return new Response('message sent');
     }
