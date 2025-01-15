@@ -12,14 +12,17 @@ final class LastVisitedArticlesService
         protected readonly LastViewedArticleRepositoryInterface $repository
     ) {}
 
-    /** @throws NoSuchArticleException */
+    /** @throws NoSuchArticleException 
+     * @throws CouldNotFindException on database error
+     */
     public function getLastArticle(): Article
     {
         return $this->repository->getLast();
     }
 
     /** @throws CouldNotSaveArticleException */
-    public function saveLastArticle(Article $article): void {
+    public function saveLastArticle(Article $article): void
+    {
         $this->repository->save($article);
     }
 }

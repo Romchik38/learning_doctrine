@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repository;
 
+use App\Application\LastVisitedArticles\CouldNotFindException;
 use App\Application\LastVisitedArticles\LastViewedArticleRepositoryInterface;
 use App\Application\LastVisitedArticles\NoSuchArticleException;
 use App\Application\LastVisitedArticles\Views\Article;
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 final class LastViewedArticleRepository implements LastViewedArticleRepositoryInterface
@@ -18,10 +20,16 @@ final class LastViewedArticleRepository implements LastViewedArticleRepositoryIn
         protected readonly RequestStack $requestStack
     ) {}
 
-    /** @throws NoSuchArticleException */
+    /** @throws NoSuchArticleException
+     *  @throws CouldNotFindException on database error
+     */
     public function getLast(): Article
     {
-        $session = $this->requestStack->getSession();
+        try {
+            $session = $this->requestStack->getSession();
+        } catch(SessionNotFoundException){
+            throw new CouldNotFindException('Cant get last article, session do not turn on');
+        }
         $articleName = $session->get(self::ARTICLE_NAME_FIELD);
         $articleLink = $session->get(self::ARTICLE_LINK_FIELD);
         if (

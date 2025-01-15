@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Infrastructure\Controller\Home;
 
 use App\Application\ArticleView\ArticleViewService;
+use App\Application\LastVisitedArticles\CouldNotFindException;
 use App\Application\LastVisitedArticles\LastVisitedArticlesService;
 use App\Application\LastVisitedArticles\NoSuchArticleException;
 use App\Event\HomePage;
 use DateTime;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +22,8 @@ final class HomeController extends AbstractController
     public function __construct(
         protected readonly ArticleViewService $articleViewService,
         protected readonly LastVisitedArticlesService $lastVisitedArticlesService,
-        protected readonly EventDispatcherInterface $eventDispatcher
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly LoggerInterface $logger
     ) {}
 
     #[Route('/', name: 'homepage_index', methods: ['GET', 'HEAD'])]
@@ -32,6 +35,9 @@ final class HomeController extends AbstractController
             $lastViewedArticle = $this->lastVisitedArticlesService->getLastArticle();
         } catch (NoSuchArticleException) {
             $lastViewedArticle = null;
+        } catch (CouldNotFindException $e) {
+            $lastViewedArticle = null;
+            $this->logger->error($e->getMessage());
         }
 
         $event = new HomePage(new DateTime());
