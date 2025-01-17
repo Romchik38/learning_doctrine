@@ -32,9 +32,9 @@ final class HomeController extends AbstractController
     #[Route( path: '/', name: 'homepage_index', methods: ['GET', 'HEAD'])]
     public function index(Request $request): Response
     {
-        $locale = $request->getLocale();
-        $prefered = $request->getPreferredLanguage(['uk', 'en'] );
-        $this->localeSwitcher->setLocale($prefered);
+        // $locale = $request->getLocale();
+        // $prefered = $request->getPreferredLanguage(['uk', 'en'] );
+        // $this->localeSwitcher->setLocale($prefered);
 
         $dtos =  $this->articleViewService->listActive();
 
