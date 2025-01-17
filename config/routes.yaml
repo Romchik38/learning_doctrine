@@ -1,3 +1,10 @@
+homepage:
+    path: /{_locale}
+    controller: App\Infrastructure\Controller\Home\HomeController::index
+    defaults:
+        template: home/index.html.twig
+        _locale: '%locale%'
+
 controllers:
     resource:
         path: ../src/Infrastructure/Controller/
