@@ -13,8 +13,10 @@ use DateTime;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\LocaleSwitcher;
 
 final class HomeController extends AbstractController
 {
@@ -23,12 +25,17 @@ final class HomeController extends AbstractController
         protected readonly ArticleViewService $articleViewService,
         protected readonly LastVisitedArticlesService $lastVisitedArticlesService,
         protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly LoggerInterface $logger
+        protected readonly LoggerInterface $logger,
+        private LocaleSwitcher $localeSwitcher
     ) {}
 
     #[Route('/', name: 'homepage_index', methods: ['GET', 'HEAD'])]
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $locale = $request->getLocale();
+        $prefered = $request->getPreferredLanguage(['uk', 'en'] );
+        $this->localeSwitcher->setLocale($prefered);
+
         $dtos =  $this->articleViewService->listActive();
 
         try {
