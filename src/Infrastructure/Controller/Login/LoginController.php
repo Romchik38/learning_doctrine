@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Controller;
+namespace App\Infrastructure\Controller\Login;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
