@@ -10,6 +10,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 use function Symfony\Component\String\u;
 
+/**
+ * - do  a redirect from / to /locale
+ * - do redirect from /unsupported to /locale
+ */
 final class RedirectToPreferredLocale implements EventSubscriberInterface
 {
     public function __construct(
@@ -27,6 +31,12 @@ final class RedirectToPreferredLocale implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
+        /** @todo move languages to params */
+        $preferredLanguage = $request->getPreferredLanguage(['en', 'uk']);
+        if($preferredLanguage === null) {
+            $preferredLanguage = 'en';
+        }
+        
         $path = $request->getPathInfo();
         $isMain = $event->isMainRequest();
         // Ignore sub-requests and all URLs but the homepage
@@ -38,7 +48,7 @@ final class RedirectToPreferredLocale implements EventSubscriberInterface
             } else {
                 $response = new RedirectResponse(
                     /** @todo move to params */
-                    sprintf('/%s%s', 'en', $path)
+                    sprintf('/%s%s', $preferredLanguage, $path)
                 );
                 $event->setResponse($response);
                 return;
@@ -54,8 +64,6 @@ final class RedirectToPreferredLocale implements EventSubscriberInterface
             return;
         }
 
-        /** @todo move languages to params */
-        $preferredLanguage = $request->getPreferredLanguage(['en', 'uk']);
         $response = new RedirectResponse(
             $this->urlGenerator->generate(
                 'homepage_index',
