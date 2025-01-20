@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Infrastructure\Controller\Register;
 
 use App\Domain\User\User;
 use App\Form\RegistrationFormType;
@@ -35,8 +35,9 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('homepage_index');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('base.html.twig', [
             'registrationForm' => $form,
+            'controller_template' => 'registration/index.html.twig',
         ]);
     }
 }
