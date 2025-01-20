@@ -1,2 +1,3 @@
 home:
   h1: Marcian stories
+  p_lead: Wellcome to our site. On this page you can see only active articles. Please, visit <a href="%link%">admin panel</a> to add new or edit existing story

@@ -3,7 +3,11 @@
         <div class="col-md-8">
             <div class="row">
                 <h1 class="text-center my-3">{{ 'home.h1'|trans }}</h1>
-                <p class="lead">Wellcome to our site. On this page you can see only active articles. Please, visit <a href="{{ path('admin_homepage_index') }}">admin panel</a> to add new or edit existing story.</p>
+                <p class="lead">
+                    {{ 'home.p_lead'|trans({ '%link%': path('admin_homepage_index')})|raw }}.
+                </p>
+                {# <p class="lead">Wellcome to our site. On this page you can see only active articles. Please, visit <a href="{{ path('admin_homepage_index') }}">admin panel</a> to add new or edit existing story.</p> #}
+                
                 {% for article in active_articles %}
                     <div class="col-md-6">
                         <div class="border p-2">
