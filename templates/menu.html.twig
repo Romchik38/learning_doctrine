@@ -17,11 +17,7 @@
         </li>
       </ul>
     </div>
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <span class="navbar-text">
-            {{ app.user.email }}
-        </span>
-    {% endif %}
+    {% include 'blocks/login.html.twig' %}
   </div>
 </nav>
 {% endblock %}
