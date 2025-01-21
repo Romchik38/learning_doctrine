@@ -17,6 +17,11 @@
         </li>
       </ul>
     </div>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <span class="navbar-text">
+            {{ app.user.email }}
+        </span>
+    {% endif %}
   </div>
 </nav>
 {% endblock %}
