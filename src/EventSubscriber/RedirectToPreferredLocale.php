@@ -64,12 +64,12 @@ final class RedirectToPreferredLocale implements EventSubscriberInterface
             return;
         }
 
-        $response = new RedirectResponse(
-            $this->urlGenerator->generate(
-                'homepage_index',
-                ['_locale' => $preferredLanguage]
-            )
+        $url = $this->urlGenerator->generate(
+            'homepage_index',
+            ['_locale' => $preferredLanguage]
         );
+
+        $response = new RedirectResponse($url);
         $event->setResponse($response);
     }
 }

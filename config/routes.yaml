@@ -13,6 +13,10 @@ controllers:
 
     prefix: /{_locale}
     defaults:
-        _locale: '%locale%'
+        # If set url will be / on default locale. In example:
+        #   default locale - en
+        #   expects home url - /en
+        #   will be - /
+        #_locale: '%locale%'
     
     trailing_slash_on_root: false
