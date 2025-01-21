@@ -11,3 +11,8 @@ The app demonstrates:
   - Service
   - Application
 - Email
+- Security
+  - [-] /register
+  - /login
+  - /logout
+  
