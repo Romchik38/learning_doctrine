@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -17,7 +18,9 @@ use function Symfony\Component\String\u;
 final class RedirectToPreferredLocale implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly UrlGeneratorInterface $urlGenerator
+        private readonly UrlGeneratorInterface $urlGenerator,
+        #[Autowire('%languages%')] private readonly array $languages,
+        #[Autowire('%locale%')] private readonly string $locale
     ) {}
 
     public static function getSubscribedEvents(): array
@@ -31,10 +34,9 @@ final class RedirectToPreferredLocale implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        /** @todo move languages to params */
-        $preferredLanguage = $request->getPreferredLanguage(['en', 'uk']);
+        $preferredLanguage = $request->getPreferredLanguage($this->languages);
         if($preferredLanguage === null) {
-            $preferredLanguage = 'en';
+            $preferredLanguage = $this->locale;
         }
         
         $path = $request->getPathInfo();
@@ -42,12 +44,10 @@ final class RedirectToPreferredLocale implements EventSubscriberInterface
         // Ignore sub-requests and all URLs but the homepage
         if (!$isMain || '/' !== $path) {
             $locale = $request->getLocale();
-            /** @todo move to params */
-            if(in_array($locale, ['en', 'uk'])) {
+            if(in_array($locale, $this->languages)) {
                 return;
             } else {
                 $response = new RedirectResponse(
-                    /** @todo move to params */
                     sprintf('/%s%s', $preferredLanguage, $path)
                 );
                 $event->setResponse($response);
