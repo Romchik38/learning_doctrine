@@ -9,7 +9,7 @@
         "ext-iconv": "*",
         "doctrine/dbal": "^3.9.4",
         "doctrine/doctrine-bundle": "^2.13.2",
-        "doctrine/doctrine-migrations-bundle": "^3.3.1",
+        "doctrine/doctrine-migrations-bundle": "^3.4.0",
         "doctrine/orm": "^3.3.1",
         "nikic/php-parser": "^5.4",
         "phpdocumentor/reflection-docblock": "^5.6.1",
@@ -45,7 +45,7 @@
         "symfony/validator": "7.2.*",
         "symfony/web-link": "7.2.*",
         "symfony/yaml": "7.2.*",
-        "symfonycasts/verify-email-bundle": "^1.17",
+        "symfonycasts/verify-email-bundle": "^1.17.3",
         "twig/extra-bundle": "^2.12|^3.18",
         "twig/twig": "^2.12|^3.18"
     },
