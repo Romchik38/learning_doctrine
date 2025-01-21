@@ -15,4 +15,5 @@ The app demonstrates:
   - [-] /register
   - /login
   - /logout
+  - [-] access control to */admin* area
   
