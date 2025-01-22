@@ -1,5 +1,5 @@
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-<span class="navbar-text me-1">
+<span class="navbar-text me-3">
     {{ app.user.email }}
 </span>
 <a href="{{ path('app_logout') }}">
@@ -8,9 +8,14 @@
   </span>
 </a>
 {% else %}
-<a href="{{ path('app_login') }}">
+<a class="me-3" href="{{ path('app_login') }}">
   <span class="">
       login
+  </span>
+</a>
+<a href="{{ path('app_register') }}">
+  <span class="">
+      register
   </span>
 </a>
 {% endif %}
