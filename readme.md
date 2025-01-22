@@ -12,10 +12,10 @@ The app demonstrates:
   - Application
 - Email
 - Security
-  - [-] /register
+  - /register
   - /login
   - /logout
-  - [-] access control to */admin* area
+  - access control to */admin* area
 - Session
   - last visited article
   
