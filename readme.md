@@ -16,6 +16,10 @@ The app demonstrates:
   - /login
   - /logout
   - access control to */admin* area
+  - csrf manually
+    - Create new category form `/admin/category/new` is protected with tocken
+      - template - `templates/admin/category/new.html.twig`
+      - controller - `src/Infrastructure/Controller/Admin/Category/CategoryController.php`
 - Session
   - last visited article
   

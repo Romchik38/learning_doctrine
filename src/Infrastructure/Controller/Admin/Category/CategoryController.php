@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
@@ -25,14 +26,19 @@ final class CategoryController extends AbstractController
     public function __construct(
         private readonly CategoryService $categoryService,
         private readonly UrlHelper $urlHelper,
+        private readonly UrlGeneratorInterface $urlGenerator
     ) {}
 
     #[Route('/admin/category/new', name: 'admin_category_new_get', methods: ['GET', 'HEAD'])]
-    public function new(): Response
+    public function new(Request $request): Response
     {
+
+        $errorMessage = $request->query->get('error-message');
+
         return $this->render('admin.html.twig', [
             'controller_name' => 'ArticleController',
-            'controller_template' => 'admin/category/new.html.twig'
+            'controller_template' => 'admin/category/new.html.twig',
+            'error_message' => $errorMessage
         ]);
     }
 
@@ -40,6 +46,16 @@ final class CategoryController extends AbstractController
     public function save(Request $request): Response
     {
         $params = $request->request->all();
+        // 1. csrf
+        $token = $params['token'] ?? null;
+        if (!$this->isCsrfTokenValid('new-category', $token)) {
+            // return back to new category page
+            $newCategoryurl = $this->urlGenerator->generate('admin_category_new_get', [
+                'error-message' => 'Form is invalid'
+            ]);
+            return new RedirectResponse($newCategoryurl);
+        }
+        // 2. save
         try {
             $id = $this->categoryService->save(AddFromForm::fromHash($params));
         } catch (CouldNotSaveException) {
@@ -54,7 +70,9 @@ final class CategoryController extends AbstractController
             );
         }
 
-        $url = $this->urlHelper->getAbsoluteUrl(sprintf('/admin/category/%s', $id()));
+        $url = $this->urlGenerator->generate('category_view', [
+            'id' => $id()
+        ]);
 
         return new RedirectResponse($url);
     }
