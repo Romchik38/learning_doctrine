@@ -6,8 +6,8 @@
                 <h2>Categories</h2>
                 <p>Total - {{ total_categories }} </p>
                 <ul class="list-group">
-                <li class="list-group-item"><a href="/admin/category/new">Create new</a></li>
-                <li class="list-group-item"><a href="/admin/category">List all</a></li>
+                <li class="list-group-item"><a href="{{ path('admin_category_new_get') }}">Create new</a></li>
+                <li class="list-group-item"><a href="{{ path('admin_category_list') }}">List all</a></li>
                 </ul>
             </div>
         </div>
@@ -16,8 +16,8 @@
                 <h2>Articles</h2>
                 <p>Total - {{ total_articles }} </p>
                 <ul class="list-group">
-                <li class="list-group-item"><a href="/admin/article/new">Create new</a></li>
-                <li class="list-group-item"><a href="/admin/article">List all</a></li>
+                <li class="list-group-item"><a href="{{ path('admin_article_new_get') }}">Create new</a></li>
+                <li class="list-group-item"><a href="{{ path('admin_article_list') }}">List all</a></li>
                 </ul>
             </div>
         </div>
