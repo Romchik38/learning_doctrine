@@ -20,10 +20,10 @@
                     <tr>
                         <th scope="row">{{ category.id }}</th>
                         <td>{{ category.name }}</td>
-                        <td><a href="{{ '/admin/category/' ~ category.id }}">view</a></td>
-                        <td><a href="{{ '/admin/category/edit/' ~ category.id }}">edit</a></td>
+                        <td><a href="{{ path('category_view', { id: category.id }) }}">view</a></td>
+                        <td><a href="#">edit</a></td>
                         <td>
-                            <form action="{{ '/admin/category/delete/' ~ category.id }}" method="post">
+                            <form action="{{ path('category_delete', { id: category.id }) }}" method="post">
                                 <button type="submit" class="btn btn-secondary my-2 btn-sm py-0">delete</button>
                             </form>
                         </td>
