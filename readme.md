@@ -16,4 +16,6 @@ The app demonstrates:
   - /login
   - /logout
   - [-] access control to */admin* area
+- Session
+  - last visited article
   
