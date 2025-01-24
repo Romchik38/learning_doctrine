@@ -26,6 +26,6 @@ return [
         'version' => '7.3.0',
     ],
     'home' => [
-        'path' => './js/home.js'
+        'path' => './assets/js/home.js'
     ]
 ];
