@@ -22,4 +22,5 @@ The app demonstrates:
       - controller - `src/Infrastructure/Controller/Admin/Category/CategoryController.php`
 - Session
   - last visited article
-  
+- Assets mapper
+  - [-] Stimulus
