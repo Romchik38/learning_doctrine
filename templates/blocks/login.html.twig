@@ -4,18 +4,18 @@
 </span>
 <a href="{{ path('app_logout') }}">
   <span class="">
-      logout
+      {{ 'registration.logout'|trans }}
   </span>
 </a>
 {% else %}
 <a class="me-3" href="{{ path('app_login') }}">
   <span class="">
-      login
+      {{ 'registration.login'|trans }}
   </span>
 </a>
 <a href="{{ path('app_register') }}">
   <span class="">
-      register
+      {{ 'registration.register'|trans }}
   </span>
 </a>
 {% endif %}
