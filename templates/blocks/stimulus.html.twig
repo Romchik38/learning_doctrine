@@ -1,6 +1,12 @@
 <div class="container-fluid">
     <div class="row">
         <h2>Stimulus App</h2>
+
+        <div data-controller="hello">
+            <input data-hello-target="name" type="text">
+            <button data-action="click->hello#greet">Greet</button>
+        </div>
+
         <hr>
     </div>
 </div>
