@@ -21,6 +21,6 @@ The app demonstrates:
       - template - `templates/admin/category/new.html.twig`
       - controller - `src/Infrastructure/Controller/Admin/Category/CategoryController.php`
 - Session
-  - last visited article
+  - last visited article on the Home page
 - Assets mapper
   - [-] Stimulus
