@@ -19,6 +19,8 @@ final class HomepageHandler
     public function __invoke(Homepage $message)
     {
         $date = $message->date;
-        $this->logger->debug($date->format('Y-m-d H:i:s'));
+        $this->logger->debug(
+            sprintf('Homepage visited at %s', $date->format('Y-m-d H:i:s'))
+        );
     }
 }
