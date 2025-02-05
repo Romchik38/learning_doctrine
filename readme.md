@@ -6,6 +6,7 @@ The app demonstrates:
 - Translates
 - Locale routing
 - Message dispatch
+- Message in a browser
 - Tests
   - Doctrine
   - Service
@@ -32,3 +33,8 @@ Sync message handling:
 - message - `src/Message/Homepage.php`
 - handler - `src/MessageHandler/HomepageHandler.php`
 - dispatch - `src/Infrastructure/Controller/Home/HomeController.php`
+
+## Message in a browser
+
+- dispatched from `src/Infrastructure/Controller/Admin/Category/CategoryController.php`
+- rendered in `templates/admin.html.twig`
