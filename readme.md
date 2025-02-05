@@ -24,3 +24,11 @@ The app demonstrates:
   - last visited article on the Home page
 - Assets mapper
   - [-] Stimulus
+
+## Message dispatch
+
+Sync message handling:
+
+- message - `src/Message/Homepage.php`
+- handler - `src/MessageHandler/HomepageHandler.php`
+- dispatch - `src/Infrastructure/Controller/Home/HomeController.php`

@@ -9,12 +9,14 @@ use App\Application\LastVisitedArticles\CouldNotFindException;
 use App\Application\LastVisitedArticles\LastVisitedArticlesService;
 use App\Application\LastVisitedArticles\NoSuchArticleException;
 use App\Event\HomePage;
+use App\Message\Homepage as MessageHomepage;
 use DateTime;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\LocaleSwitcher;
 
@@ -25,6 +27,7 @@ final class HomeController extends AbstractController
         protected readonly ArticleViewService $articleViewService,
         protected readonly LastVisitedArticlesService $lastVisitedArticlesService,
         protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly MessageBusInterface $messageBus,
         protected readonly LoggerInterface $logger,
         private LocaleSwitcher $localeSwitcher
     ) {}
@@ -44,8 +47,10 @@ final class HomeController extends AbstractController
             $this->logger->error($e->getMessage());
         }
 
-        $event = new HomePage(new DateTime());
+        $messageDate = new DateTime();
+        $event = new HomePage($messageDate);
         $this->eventDispatcher->dispatch($event, 'homepage.event');
+        $this->messageBus->dispatch(new MessageHomepage($messageDate));
 
         return $this->render('base.html.twig', [
             'controller_name' => 'HomeController',
