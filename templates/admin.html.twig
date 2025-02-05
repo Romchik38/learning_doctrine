@@ -14,7 +14,19 @@
     <body>
         <div class="container-fluid">
             {% include 'admin-menu.html.twig' %}
+
+            {% for message in app.flashes('notification') %}
+                <div class="alert alert-info alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
             {% include controller_template %}
         </div>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
     </body>
 </html>

@@ -19,6 +19,11 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/** Notification */
+
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
+
 #[IsGranted('ROLE_ADMIN')]
 final class CategoryController extends AbstractController
 {
@@ -43,8 +48,10 @@ final class CategoryController extends AbstractController
     }
 
     #[Route('/admin/category/save', name: 'category_save', methods: ['POST'])]
-    public function save(Request $request): Response
-    {
+    public function save(
+        Request $request,
+        NotifierInterface $notifier
+    ): Response {
         $params = $request->request->all();
         // 1. csrf
         $token = $params['token'] ?? null;
@@ -62,7 +69,7 @@ final class CategoryController extends AbstractController
             return new Response('category was not save, please try later');
         } catch (InvalidArgumentException $e) {
             return new Response(
-                sprintf('Error while creating new category: %s', $e->getMessage())
+                sprintf('Error while saving category: %s', $e->getMessage())
             );
         } catch (NoSuchCategoryException) {
             throw $this->createNotFoundException(
@@ -70,6 +77,8 @@ final class CategoryController extends AbstractController
             );
         }
 
+        $notifier->send(new Notification('Category was saved', ['browser']));
+        
         $url = $this->urlGenerator->generate('category_view', [
             'id' => $id()
         ]);
