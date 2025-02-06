@@ -8,6 +8,7 @@ The app demonstrates:
 - Message dispatch
 - Message in a browser
 - Email Notifocation
+- Chat (Telegram) Notifocation
 - Tests
 - Email
 - Security
@@ -31,6 +32,13 @@ Sync message handling:
 
 - dispatched from `src/Infrastructure/Controller/Admin/Category/CategoryController.php` func `delete`
 - configured default sender `config/packages/mailer.yaml`
+
+## Chat (Telegram) Notifocation
+
+- config `config/packages/notifier.yaml`
+- installed `composer require symfony/telegram-notifier`
+- added a DSN to env.dev.local `TELEGRAM_DSN=telegram://TOKEN@default?channel=CHAT_ID`
+- dispathecd from `src/Infrastructure/Controller/Admin/Article/ArticleController.php`
 
 ## Tests
 
