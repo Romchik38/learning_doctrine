@@ -17,7 +17,7 @@
         {% endif %}
     </div>
     <div class="text-end">
-        <a class="btn btn-primary my-2" href="/admin/article/edit/{{ article.id }}" role="button">Edit</a>
+        <a class="btn btn-primary my-2" href="{{ path('admin_article_edit', { id: article.id }) }}" role="button">Edit</a>
     </div>
     <div>
         <a href="/admin/article">list all</a>

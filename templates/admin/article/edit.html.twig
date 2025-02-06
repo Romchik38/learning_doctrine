@@ -2,7 +2,7 @@
 
 <div class="container">
     <h1>Article edit page</h1>
-    <form action="/admin/article/save" method="post">
+    <form action="{{ path('admin_article_save') }}" method="post">
         <div class="mb-3">
             <label class="form-label" for="name">Id: {{ article.id }}</label>
             <input type="text" class="form-control" name="id" value="{{ article.id }}" hidden>

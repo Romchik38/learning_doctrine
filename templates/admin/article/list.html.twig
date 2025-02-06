@@ -30,10 +30,10 @@
                         <td>{{ article.name }}</td>
                         <td>{{ article.shortDescription }}</td>
                         <td class="{{ activeColor }}">{{ article.active }}</td>
-                        <td><a href="{{ '/admin/article/' ~ article.id }}">view</a></td>
-                        <td><a href="{{ '/admin/article/edit/' ~ article.id }}">edit</a></td>
+                        <td><a href="{{ path('admin_article_view', { id: article.id }) }}">view</a></td>
+                        <td><a href="{{ path('admin_article_edit', { id: article.id }) }}">edit</a></td>
                         <td>
-                            <form action="{{ '/admin/article/delete/' ~ article.id }}" method="post">
+                            <form action="{{ path('admin_article_delete', { id: article.id }) }}" method="post">
                                 <button type="submit" class="btn btn-secondary my-2 btn-sm py-0">delete</button>
                             </form>
                         </td>

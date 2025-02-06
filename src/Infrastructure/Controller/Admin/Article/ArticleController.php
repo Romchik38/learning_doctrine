@@ -18,6 +18,11 @@ use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/** Notification */
+
+use Symfony\Component\Notifier\ChatterInterface;
+use Symfony\Component\Notifier\Message\ChatMessage;
+
 #[IsGranted('ROLE_ADMIN')]
 final class ArticleController extends AbstractController
 {
@@ -37,8 +42,10 @@ final class ArticleController extends AbstractController
     }
 
     #[Route('/admin/article/save', name: 'admin_article_save', methods: ['POST'])]
-    public function save(Request $request): Response
-    {
+    public function save(
+        Request $request,
+        ChatterInterface $chatter
+    ): Response {
         $params = $request->request->all();
         $formData = AddFromForm::fromHash($params);
         try {
@@ -49,23 +56,32 @@ final class ArticleController extends AbstractController
             return new Response(
                 sprintf('Error while creating new article: %s', $e->getMessage())
             );
-        } catch(NoSuchArticleException) {
+        } catch (NoSuchArticleException) {
             return new Response(
                 sprintf('Article with id %s not found', $formData->id)
             );
-        } catch(NoSuchCategoryException) {
+        } catch (NoSuchCategoryException) {
             return new Response(
                 sprintf('Selected category with id %s not found', $formData->categoryId)
             );
-        } catch(CannotActivateArticle $e) {
+        } catch (CannotActivateArticle $e) {
             return new Response(
                 sprintf('Can not activate the article: %s', $e->getMessage())
             );
         }
 
         /** success */
+        $message = (new ChatMessage(
+            sprintf('Article with id %s was saved', $id())
+        ))
+            // if not set explicitly, the message is sent to the
+            // default transport (the first one configured)
+            ->transport('telegram');
+
+        $sentMessage = $chatter->send($message);
+
         $url = $this->urlHelper->getAbsoluteUrl(sprintf('/admin/article/%s', $id()));
-        
+
         return new RedirectResponse($url);
     }
 
@@ -81,11 +97,11 @@ final class ArticleController extends AbstractController
             throw $this->createNotFoundException(
                 sprintf('article with id %s not found', $id)
             );
-        } catch(InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             return new Response(
                 sprintf('Cannot delete article with id %s: %s', $id, $e->getMessage())
             );
-        } catch(CouldNotDeleteException $e){
+        } catch (CouldNotDeleteException $e) {
             return new Response(
                 sprintf('Cannot delete article with id %s, please try later', $id)
             );
