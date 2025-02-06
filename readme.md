@@ -7,24 +7,12 @@ The app demonstrates:
 - Locale routing
 - Message dispatch
 - Message in a browser
+- Email Notifocation
 - Tests
-  - Doctrine
-  - Service
-  - Application
 - Email
 - Security
-  - /register
-  - /login
-  - /logout
-  - access control to */admin* area
-  - csrf manually
-    - Create new category form `/admin/category/new` is protected with tocken
-      - template - `templates/admin/category/new.html.twig`
-      - controller - `src/Infrastructure/Controller/Admin/Category/CategoryController.php`
 - Session
-  - last visited article on the Home page
 - Assets mapper
-  - [-] Stimulus
 
 ## Message dispatch
 
@@ -38,3 +26,33 @@ Sync message handling:
 
 - dispatched from `src/Infrastructure/Controller/Admin/Category/CategoryController.php`
 - rendered in `templates/admin.html.twig`
+
+## Email Notifocation
+
+- dispatched from `src/Infrastructure/Controller/Admin/Category/CategoryController.php` func `delete`
+- configured default sender `config/packages/mailer.yaml`
+
+## Tests
+
+- Doctrine
+- Service
+- Application
+
+## Security
+
+- /register
+- /login
+- /logout
+- access control to */admin* area
+- csrf manually
+  - Create new category form `/admin/category/new` is protected with tocken
+    - template - `templates/admin/category/new.html.twig`
+    - controller - `src/Infrastructure/Controller/Admin/Category/CategoryController.php`
+
+## Session
+
+- last visited article on the Home page
+
+## Assets mapper
+
+- Stimulus

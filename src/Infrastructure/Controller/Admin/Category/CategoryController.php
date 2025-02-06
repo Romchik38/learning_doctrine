@@ -23,6 +23,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
 
 #[IsGranted('ROLE_ADMIN')]
 final class CategoryController extends AbstractController
@@ -78,7 +79,7 @@ final class CategoryController extends AbstractController
         }
 
         $notifier->send(new Notification('Category was saved', ['browser']));
-        
+
         $url = $this->urlGenerator->generate('category_view', [
             'id' => $id()
         ]);
@@ -87,10 +88,18 @@ final class CategoryController extends AbstractController
     }
 
     #[Route('/admin/category/delete/{id}', name: 'category_delete', methods: ['POST'])]
-    public function delete($id): Response
-    {
+    public function delete(
+        $id,
+        NotifierInterface $notifier
+    ): Response {
         try {
             $this->categoryService->delete($id);
+
+            $notification =
+                (new Notification('Category was deleted', ['email']))
+                ->content(sprintf('Category with id %s was deleted', $id));
+            $recipient = new Recipient('admin@localhost.com');
+            $notifier->send($notification, $recipient);
 
             $url = $this->urlHelper->getAbsoluteUrl('/admin/category');
             return new RedirectResponse($url);
